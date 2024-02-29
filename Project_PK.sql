@@ -134,3 +134,33 @@ VALUES
 
 select * from users;
 
+-- Assuming every seller or both role user is an agent, here are the inserts:
+INSERT INTO Agents (UserID, AgentID, AgentCompany, Agent_Name, Experience, Location, Languages) VALUES
+(2, 101, 'Real Estates Co.', 'Jane Smith', 5, 'Los Angeles', 'English, Spanish'),
+(3, 102, 'Homes & Estates', 'Michael Johnson', 8, 'Chicago', 'English, Russian'),
+(5, 103, 'Top Properties', 'David Hernandez', 4, 'Houston', 'English, Spanish'),
+(6, 104, 'CityScape Realtors', 'Sarah Wilson', 6, 'Phoenix', 'English'),
+(8, 105, 'Sunshine Realty', 'Ashley Young', 3, 'San Diego', 'English, French'),
+(9, 106, 'Dream Homes', 'Brian Lee', 7, 'Dallas', 'English, Korean'),
+(11, 107, 'Metro Realtors', 'Charles Rodriguez', 5, 'Atlanta', 'English, Spanish'),
+(14, 108, 'Capital Estate Agents', 'Elizabeth Brown', 9, 'Washington DC', 'English'),
+(16, 109, 'Lakeside Realty', 'Samantha White', 4, 'Chicago', 'English'),
+(18, 110, 'Horizon Properties', 'Olivia Lopez', 8, 'Austin', 'English, Spanish'),
+(20, 111, 'Golden Gate Estates', 'Ava Scott', 2, 'San Francisco', 'English'),
+(21, 112, 'Pioneer Realtors', 'Michelle Thompson', 6, 'Boston', 'English, French'),
+(23, 113, 'Bay Area Realty', 'Linda Nguyen', 7, 'San Francisco', 'English, Vietnamese'),
+(25, 114, 'Lone Star Listings', 'Samantha Clark', 3, 'Austin', 'English, Spanish'),
+(30, 115, 'Peachtree Properties', 'Ethan Taylor', 5, 'Atlanta', 'English'),
+(32, 116, 'Harbor Homes', 'Mason Brown', 4, 'Baltimore', 'English'),
+(34, 117, 'Coastal Realty', 'Oliver Garcia', 2, 'Tampa', 'English, Spanish'),
+(37, 118, 'Desert Dwellings Realty', 'Noah Miller', 6, 'Las Vegas', 'English'),
+(39, 119, 'Crossroads Real Estate', 'Liam Anderson', 5, 'Indianapolis', 'English'),
+(41, 120, 'Fort Worth Realtors', 'James Wilson', 7, 'Fort Worth', 'English'),
+(44, 121, 'Blues City Realty', 'Sophie Green', 3, 'Memphis', 'English'),
+(26, 122, 'Windy City Estates', 'Steve Smith', 8, 'Chicago', 'English'),
+(28, 123, 'Prairie Homes Realty', 'David Warner', 4, 'Kansas', 'English'),
+(35, 124, 'Twin Cities Realty', 'Ava Smith', 5, 'Minneapolis', 'English'),
+(38, 125, 'Queen City Real Estate', 'Mia Rodriguez', 6, 'Charlotte', 'English'),
+(42, 126, 'Sunshine State Realty', 'Harper Martinez', 7, 'Jacksonville', 'English'),
+(45, 127, 'Crescent City Properties', 'Lucas Clark', 4, 'New Orleans', 'English');
+
