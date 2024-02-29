@@ -81,5 +81,21 @@ CREATE TABLE Rent_Properties (
     FOREIGN KEY (sellingUserID) REFERENCES Users(UserID),
     FOREIGN KEY (buyerUserID) REFERENCES Users(UserID)
 );
-
+INSERT INTO Users (UserID, Name, email, mobileNumber, BuyerSeller, Location, Ratings)
+VALUES
+(1, 'John Doe', 'john.doe@example.com', '1234567890', 'Buyer', 'New York', 4.5),
+(2, 'Jane Smith', 'jane.smith@example.com', '9876543210', 'Seller', 'Los Angeles', 4.2),
+(3, 'Michael Johnson', 'michael.j@example.com', '5555555555', 'Both', 'Chicago', 4.8),
+(4, 'Alice Garcia', 'alice.g@example.com', '2223334444', 'Buyer', 'Miami', 4.7),
+(5, 'David Hernandez', 'david.h@example.com', '3334445555', 'Seller', 'Houston', 4.3),
+(6, 'Sarah Wilson', 'sarah.w@example.com', '4445556666', 'Both', 'Phoenix', 4.0),
+(7, 'Robert Miller', 'robert.m@example.com', '5556667777', 'Buyer', 'San Antonio', 4.9),
+(8, 'Ashley Young', 'ashley.y@example.com', '6667778888', 'Seller', 'San Diego', 4.1),
+(9, 'Brian Lee', 'brian.l@example.com', '7778889999', 'Both', 'Dallas', 4.6),
+(10, 'Emily Walker', 'emily.w@example.com', '8889990000', 'Buyer', 'San Jose', 4.4),
+(11, 'Charles Rodriguez', 'charles.r@example.com', '9990001111', 'Seller', 'Atlanta', 4.8),
+(12, 'Katherine Thomas', 'katherine.t@example.com', '0001112222', 'Buyer', 'Seattle', 4.2),
+(13, 'William Jackson', 'william.j@example.com', '1112223333', 'Both', 'Denver', 4.9),
+(14, 'Elizabeth Brown', 'elizabeth.b@example.com', '2223394444', 'Seller', 'Washington DC', 4.5),
+(15, 'Joseph Garcia', 'joseph.g@example.com', '3334495555', 'Buyer', 'Las Vegas',  4.1);
 
