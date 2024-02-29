@@ -64,6 +64,7 @@ CREATE TABLE SoldProperties (
 );
 
 -- Creating UnsoldProperties table
+
 CREATE TABLE UnsoldProperties (
     Unsold_SNumber INT PRIMARY KEY,
     PropertyID INT,
@@ -71,6 +72,8 @@ CREATE TABLE UnsoldProperties (
     SellerID INT,
     daysOnMarket INT,
     Status ENUM('Active', 'pre-release'),
+    AgentID int,
+    FOREIGN KEY (AgentID) REFERENCES Agents(AgentID),
     FOREIGN KEY (PropertyID) REFERENCES Properties(PropertyID),
     FOREIGN KEY (SellerID) REFERENCES Users(UserID)
 );
@@ -194,36 +197,36 @@ VALUES
 (8, 8, 'sold', '8304 Oak Lane', '20001', 'Washington', 'DC', 1700, 750000.00, 'Townhouse', 0.05, 3, 2),
 (9, 9, 'sold', '9703 Pine Court', '30301', 'Atlanta', 'GA', 2100, 600000.00, 'House', 0.17, 3, 3),
 (10, 10, 'sold', '10234 Maple Blvd', '89101', 'Las Vegas', 'NV', 2300, 480000.00, 'House', 0.22, 4, 3),
-(11, 11, 'sold', '11120 Birch Street', '85001', 'Phoenix', 'AZ', 2500, 530000.00, 'House', 0.25, 5, 4),
-(12, 12, 'sold', '12345 Cedar Ave', '02101', 'Boston', 'MA', 1600, 1100000.00, 'Apartment', 0.00, 2, 2),
-(13, 13, 'sold', '13098 Elm Street', '37201', 'Nashville', 'TN', 2200, 460000.00, 'House', 0.19, 3, 2),
-(14, 14, 'sold', '14802 Oak Drive', '48201', 'Detroit', 'MI', 1900, 420000.00, 'House', 0.16, 4, 2),
-(15, 15, 'sold', '15703 Pine Lane', '80201', 'Denver', 'CO', 1800, 690000.00, 'House', 0.11, 3, 2),
-(16, 17, 'unsold', '1604 Maple Dr', '32801', 'Orlando', 'FL', 1400, 300000.00, 'Condo', 0.00, 2, 2),
+(11, 1, 'sold', '11120 Birch Street', '85001', 'Phoenix', 'AZ', 2500, 530000.00, 'House', 0.25, 5, 4),
+(12, 2, 'sold', '12345 Cedar Ave', '02101', 'Boston', 'MA', 1600, 1100000.00, 'Apartment', 0.00, 2, 2),
+(13, 3, 'sold', '13098 Elm Street', '37201', 'Nashville', 'TN', 2200, 460000.00, 'House', 0.19, 3, 2),
+(14, 4, 'sold', '14802 Oak Drive', '48201', 'Detroit', 'MI', 1900, 420000.00, 'House', 0.16, 4, 2),
+(15, 5, 'sold', '15703 Pine Lane', '80201', 'Denver', 'CO', 1800, 690000.00, 'House', 0.11, 3, 2),
+(16, 7, 'unsold', '1604 Maple Dr', '32801', 'Orlando', 'FL', 1400, 300000.00, 'Condo', 0.00, 2, 2),
 (17, 6, 'unsold', '1725 Cedar St', '97201', 'Portland', 'OR', 2000, 450000.00, 'House', 0.13, 3, 2),
 (18, 9, 'unsold', '1846 Elm Ave', '78701', 'Austin', 'TX', 2200, 510000.00, 'House', 0.20, 4, 3),
-(19, 20, 'unsold', '1957 Oak Blvd', '94101', 'San Francisco', 'CA', 1200, 1100000.00, 'Condo', 0.00, 1, 1),
-(20, 14, 'unsold', '2098 Pine St', '10001', 'New York', 'NY', 1700, 1400000.00, 'Apartment', 0.00, 3, 2),
+(19, 2, 'unsold', '1957 Oak Blvd', '94101', 'San Francisco', 'CA', 1200, 1100000.00, 'Condo', 0.00, 1, 1),
+(20, 4, 'unsold', '2098 Pine St', '10001', 'New York', 'NY', 1700, 1400000.00, 'Apartment', 0.00, 3, 2),
 (21, 3, 'unsold', '2211 Birch Rd', '32801', 'Orlando', 'FL', 1300, 350000.00, 'Condo', 0.00, 2, 1),
 (22, 8, 'unsold', '2375 Cedar Lane', '97201', 'Portland', 'OR', 1950, 470000.00, 'House', 0.14, 3, 2),
-(23, 11, 'unsold', '2486 Elm Street', '78701', 'Austin', 'TX', 2150, 520000.00, 'House', 0.21, 4, 3),
-(24, 15, 'unsold', '2597 Oak Drive', '94101', 'San Francisco', 'CA', 1150, 1050000.00, 'Condo', 0.00, 1, 1),
-(25, 18, 'unsold', '2678 Pine Street', '10001', 'New York', 'NY', 1650, 1350000.00, 'Apartment', 0.00, 2, 2),
+(23, 1, 'unsold', '2486 Elm Street', '78701', 'Austin', 'TX', 2150, 520000.00, 'House', 0.21, 4, 3),
+(24, 5, 'unsold', '2597 Oak Drive', '94101', 'San Francisco', 'CA', 1150, 1050000.00, 'Condo', 0.00, 1, 1),
+(25, 8, 'unsold', '2678 Pine Street', '10001', 'New York', 'NY', 1650, 1350000.00, 'Apartment', 0.00, 2, 2),
 (26, 1, 'unsold', '2761 Birch Avenue', '32801', 'Orlando', 'FL', 1450, 320000.00, 'Condo', 0.00, 2, 2),
 (27, 5, 'unsold', '2845 Cedar Way', '97201', 'Portland', 'OR', 1980, 460000.00, 'House', 0.15, 3, 2),
 (28, 7, 'unsold', '2936 Elm Road', '78701', 'Austin', 'TX', 2100, 500000.00, 'House', 0.22, 4, 2),
-(29, 12, 'unsold', '3027 Oak Street', '94101', 'San Francisco', 'CA', 1100, 1080000.00, 'Condo', 0.00, 1, 1),
+(29, 2, 'unsold', '3027 Oak Street', '94101', 'San Francisco', 'CA', 1100, 1080000.00, 'Condo', 0.00, 1, 1),
 (30, 4, 'unsold', '3189 Pine Lane', '10001', 'New York', 'NY', 1600, 1300000.00, 'Apartment', 0.00, 3, 2),
 (31, 2, 'Rent', '3301 Cedar Park', '90001', 'Los Angeles', 'CA', 850, 2500.00, 'Apartment', 0.00, 1, 1),
-(32, 10, 'Rent', '3420 Birch Street', '60601', 'Chicago', 'IL', 900, 2200.00, 'Apartment', 0.00, 2, 1),
-(33, 16, 'Rent', '3539 Oak Avenue', '77001', 'Houston', 'TX', 1200, 1800.00, 'Townhouse', 0.05, 2, 2),
-(34, 13, 'Rent', '3658 Pine Road', '30301', 'Atlanta', 'GA', 1100, 1950.00, 'Condo', 0.00, 2, 2),
-(35, 19, 'Rent', '3767 Elm Drive', '98101', 'Seattle', 'WA', 750, 2100.00, 'Studio', 0.00, 0, 1),
+(32, 7, 'Rent', '3420 Birch Street', '60601', 'Chicago', 'IL', 900, 2200.00, 'Apartment', 0.00, 2, 1),
+(33, 6, 'Rent', '3539 Oak Avenue', '77001', 'Houston', 'TX', 1200, 1800.00, 'Townhouse', 0.05, 2, 2),
+(34, 3, 'Rent', '3658 Pine Road', '30301', 'Atlanta', 'GA', 1100, 1950.00, 'Condo', 0.00, 2, 2),
+(35, 9, 'Rent', '3767 Elm Drive', '98101', 'Seattle', 'WA', 750, 2100.00, 'Studio', 0.00, 0, 1),
 (36, 4, 'Rent', '3886 Birch Lane', '02101', 'Boston', 'MA', 950, 2300.00, 'Apartment', 0.00, 1, 1),
-(37, 18, 'Rent', '3995 Cedar Plaza', '33101', 'Miami', 'FL', 1000, 2200.00, 'Apartment', 0.00, 2, 2),
+(37, 8, 'Rent', '3995 Cedar Plaza', '33101', 'Miami', 'FL', 1000, 2200.00, 'Apartment', 0.00, 2, 2),
 (38, 7, 'Rent', '4014 Oak Street', '10001', 'New York', 'NY', 700, 3500.00, 'Studio', 0.00, 0, 1),
-(39, 12, 'Rent', '4133 Pine Avenue', '94101', 'San Francisco', 'CA', 800, 2700.00, 'Condo', 0.00, 1, 1),
-(40, 1, 'Rent', '4252 Birch Road', '90001', 'Los Angeles', 'CA', 1300, 3100.00, 'Apartment', 0.00, 3, 2),
+(39, 2, 'Rent', '4133 Pine Avenue', '94101', 'San Francisco', 'CA', 800, 2700.00, 'Condo', 0.00, 1, 1),
+(40, 9, 'Rent', '4252 Birch Road', '90001', 'Los Angeles', 'CA', 1300, 3100.00, 'Apartment', 0.00, 3, 2),
 (41, 9, 'Rent', '4371 Elm Street', '60601', 'Chicago', 'IL', 1150, 2500.00, 'Condo', 0.00, 2, 2),
 (42, 5, 'Rent', '4480 Oak Lane', '77001', 'Houston', 'TX', 1400, 1600.00, 'Townhouse', 0.06, 3, 2),
 (43, 3, 'Rent', '4599 Pine Road', '30301', 'Atlanta', 'GA', 1050, 2000.00, 'Condo', 0.00, 2, 1),
@@ -235,9 +238,34 @@ VALUES
 
 -- Doing Sold properties now
 select Userid from Users
-where buyerseller in ('buyer', 'both');
+where buyersellerAgent in ('seller', 'both');
+
+select * from properties;
 
 
 
+INSERT INTO SoldProperties (Sold_SNumber, PropertyID, SoldPrice, SoldDate, AgentID, BuyerID, SellerID)
+VALUES 
+(1, 1, 800000.00, '2023-03-15', 4, 1, 2),
+(2, 2, 1200000.00, '2023-04-10', 2, 3, 5),
+(3, 3, 650000.00, '2023-05-21', 6, 4, 6),
+(4, 4, 550000.00, '2023-06-07', 3, 6, 8),
+(5, 5, 950000.00, '2023-07-19', 1, 7, 9),
+(6, 6, 700000.00, '2023-08-05', 5, 9, 11),
+(7, 7, 800000.00, '2023-09-16', 7, 10, 12),
+(8, 8, 750000.00, '2023-10-03', 9, 12, 14),
+(9, 9, 600000.00, '2023-11-22', 8, 13, 15),
+(10, 10, 480000.00, '2023-12-09', 10, 15, 17),
+(11, 11, 530000.00, '2024-01-18', 2, 16, 18),
+(12, 12, 1100000.00, '2024-02-28', 4, 18, 20),
+(13, 13, 460000.00, '2024-03-07', 3, 19, 21),
+(14, 14, 420000.00, '2024-04-15', 5, 21, 23),
+(15, 15, 690000.00, '2024-05-05', 6, 22, 24);
 
 
+    
+-- We done soldproperties, gonna be easy now finallyyyyyyyy
+
+
+
+-- Lets do unsold now
