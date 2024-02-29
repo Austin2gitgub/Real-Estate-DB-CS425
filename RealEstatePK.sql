@@ -64,7 +64,7 @@ CREATE TABLE SoldProperties (
 );
 
 -- Creating UnsoldProperties table
-
+-- drop table unsoldproperties;
 CREATE TABLE UnsoldProperties (
     Unsold_SNumber INT PRIMARY KEY,
     PropertyID INT,
@@ -79,6 +79,7 @@ CREATE TABLE UnsoldProperties (
 );
 
 -- Creating RentProperties table
+-- drop table rentproperties;
 CREATE TABLE RentProperties (
     Rent_SNumber INT PRIMARY KEY,
     PropertyID INT,
@@ -86,11 +87,11 @@ CREATE TABLE RentProperties (
     Location VARCHAR(255),
     AgentID INT,
     SellerID INT,
-    TenentID INT, -- In the context of rentals, this might be more accurately named TenantID
+    TenantID INT, -- In the context of rentals, this might be more accurately named TenantID
     FOREIGN KEY (PropertyID) REFERENCES Properties(PropertyID),
     FOREIGN KEY (AgentID) REFERENCES Agents(AgentID),
     FOREIGN KEY (SellerID) REFERENCES Users(UserID),
-    FOREIGN KEY (TenentID) REFERENCES Users(UserID) -- consider renaming BuyerID to TenantID for clarity
+    FOREIGN KEY (TenantID) REFERENCES Users(UserID) -- consider renaming BuyerID to TenantID for clarity
 );
 
 
@@ -268,4 +269,57 @@ VALUES
 
 
 
+
+
 -- Lets do unsold now
+
+
+INSERT INTO UnsoldProperties (Unsold_SNumber, PropertyID, Price, SellerID, AgentID, daysOnMarket, Status)
+VALUES
+(1, 16, 295000.00, 2, 3, 45, 'Active'),
+(2, 17, 440000.00, 3, 2, 60, 'Pre-release'),
+(3, 18, 500000.00, 5, 1, 30, 'Active'),
+(4, 19, 1080000.00, 6, 7, 75, 'Active'),
+(5, 20, 1380000.00, 8, 5, 15, 'Pre-release'),
+(6, 21, 350000.00, 23, 5, 40, 'Active'),
+(7, 22, 465000.00, 9, 6, 90, 'Active'),
+(8, 23, 515000.00, 11, 7, 50, 'Pre-release'),
+(9, 24, 1040000.00, 12, 4, 20, 'Active'),
+(10, 25, 1330000.00, 14, 9, 85, 'Active'),
+(11, 26, 315000.00, 15, 10, 10, 'Pre-release'),
+(12, 27, 455000.00, 17, 8, 55, 'Active'),
+(13, 28, 495000.00, 18, 2, 25, 'Pre-release'),
+(14, 29, 1060000.00, 20, 10, 65, 'Active'),
+(15, 30, 1280000.00, 21, 3, 35, 'Active');
+
+
+
+
+-- Rent now
+
+
+
+
+INSERT INTO RentProperties (Rent_SNumber, PropertyID, RentPrice, AgentID, SellerID, TenantID)
+VALUES
+(1, 31, 2500, 7, 2, 3),
+(2, 32, 2200, 1, 3, 1),
+(3, 33, 1800, 9, 5, 4),
+(4, 34, 1950, 3, 8, 7),
+(5, 35, 2100, 5, 11, 9),
+(6, 36, 2300, 2, 14, 12),
+(7, 37, 2200, 4, 17, 15),
+(8, 38, 3500, 6, 20, 18),
+(9, 39, 2700, 8, 23, 19),
+(10, 40, 3100, 10, 26, 22),
+(11, 41, 2500, 7, 27, 24),
+(12, 42, 1600, 1, 29, 25),
+(13, 43, 2000, 3, 30, 27),
+(14, 44, 2050, 5, 21, 28),
+(15, 45, 2400, 2, 18, 30);
+
+
+
+
+
+-- Pranav Kuchibhotla(You can call me SQL god :)
