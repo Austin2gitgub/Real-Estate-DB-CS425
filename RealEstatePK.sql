@@ -138,6 +138,8 @@ VALUES
     (30, 'Heather Cooper', 'heather.cooper@example.com', '777-888-9999', 'Both', '123 Birch Ave, Othertown, USA');
 
 
+select count(*) from Users
+where BuyerSeller in ('Seller', 'both'); 
 
 
 -- Agents table now
@@ -147,12 +149,80 @@ VALUES
 INSERT INTO Agents (AgentID, UserID, AgentCompany, Agent_Name, Experience, Location, Languages)
 VALUES
     (1, 2, 'Prestige Realty', 'Jane Smith', 5, 'San Francisco, CA', 'English, Spanish'),
-    (2, 5, 'Homeward Bound', 'David Lee', 8, 'Austin, TX', 'English, French'),
-    (3, 8, 'NextHome Leaders', 'Amanda Martinez', 10, 'Miami, FL', 'English, Portuguese'),
-    (4, 11, 'Skyline Agents', 'Matthew Young', 4, 'Seattle, WA', 'English, German'),
-    (5, 14, 'Horizon Properties', 'Lisa Rodriguez', 6, 'Denver, CO', 'English, Italian'),
-    (6, 17, 'Prime Estate', 'Jason Adams', 7, 'Boston, MA', 'English, Russian'),
-    (7, 20, 'Elite Realty Group', 'Jessica Turner', 9, 'Chicago, IL', 'English, Mandarin'),
-    (8, 23, 'Trusty Homes', 'Justin Diaz', 3, 'Las Vegas, NV', 'English, Japanese'),
-    (9, 26, 'Home Connect', 'Brittany Hill', 11, 'Nashville, TN', 'English, Korean'),
-    (10, 29, 'Global Realtors', 'Joshua Barnes', 2, 'New York, NY', 'English, Dutch');
+    (2, 3, 'Homeward Bound', 'Michael Johnson', 7, 'Austin, TX', 'English, French'),
+    (3, 5, 'NextHome Leaders', 'David Lee', 8, 'Miami, FL', 'English, Portuguese'),
+    (4, 6, 'Skyline Agents', 'Sarah Brown', 4, 'Seattle, WA', 'English, German'),
+    (5, 8, 'Horizon Properties', 'Amanda Martinez', 6, 'Denver, CO', 'English, Italian'),
+    (6, 9, 'Prime Estate', 'Christopher Harris', 7, 'Boston, MA', 'English, Russian'),
+    (7, 11, 'Elite Realty Group', 'Matthew Young', 9, 'Chicago, IL', 'English, Mandarin'),
+    (8, 12, 'Trusty Homes', 'Jennifer King', 3, 'Las Vegas, NV', 'English, Japanese'),
+    (9, 14, 'Home Connect', 'Lisa Rodriguez', 11, 'Nashville, TN', 'English, Korean'),
+    (10, 15, 'Global Realtors', 'Mark Lewis', 2, 'New York, NY', 'English, Dutch'),
+    (11, 17, 'CityScape Realtors', 'Jason Adams', 5, 'Los Angeles, CA', 'English, Spanish'),
+    (12, 18, 'Sunshine Properties', 'Michelle Cook', 8, 'Orlando, FL', 'English, French'),
+    (13, 20, 'MountainView Realty', 'Jessica Turner', 10, 'Boulder, CO', 'English, German'),
+    (14, 21, 'Lakeside Homes', 'Ryan Parker', 6, 'Minneapolis, MN', 'English, Spanish'),
+    (15, 23, 'GreenLeaf Realty', 'Justin Diaz', 4, 'Portland, OR', 'English, Mandarin'),
+    (16, 24, 'Heritage Homes', 'Ashley Martinez', 7, 'Charleston, SC', 'English, Italian'),
+    (17, 26, 'Metro Realtors', 'Brittany Hill', 5, 'Detroit, MI', 'English, Arabic'),
+    (18, 27, 'Coastal Estates', 'Kevin Ramirez', 9, 'San Diego, CA', 'English, French'),
+    (19, 29, 'Pioneer Properties', 'Joshua Barnes', 3, 'Dallas, TX', 'English, Russian'),
+    (20, 30, 'Highland Realty', 'Heather Cooper', 8, 'Phoenix, AZ', 'English, Korean');
+
+
+select userId, agentid from agents;
+
+
+-- Time for the Properties tables now lessgo
+--  The lot size is in acres btw
+
+
+
+INSERT INTO Properties (PropertyID, AgentID, Status, Address, ZipCode, City, State, SquareFeet, Price, Type, LotSize, Beds, Baths)
+VALUES
+(1, 1, 'sold', '1001 Vista Blvd', '90001', 'Los Angeles', 'CA', 2200, 800000.00, 'House', 0.15, 4, 2),
+(2, 2, 'sold', '2207 Oak Drive', '10001', 'New York', 'NY', 1800, 1200000.00, 'Apartment', 0.00, 3, 2),
+(3, 3, 'sold', '3487 Pine Street', '60601', 'Chicago', 'IL', 2000, 650000.00, 'House', 0.12, 3, 2),
+(4, 4, 'sold', '4920 Maple Ave', '77001', 'Houston', 'TX', 2400, 550000.00, 'House', 0.18, 4, 3),
+(5, 5, 'sold', '5832 Cedar St', '94101', 'San Francisco', 'CA', 1500, 950000.00, 'Condo', 0.00, 2, 2),
+(6, 6, 'sold', '6409 Birch Road', '33101', 'Miami', 'FL', 2100, 700000.00, 'House', 0.20, 4, 3),
+(7, 7, 'sold', '7812 Elm Drive', '98101', 'Seattle', 'WA', 1900, 800000.00, 'House', 0.14, 3, 2),
+(8, 8, 'sold', '8304 Oak Lane', '20001', 'Washington', 'DC', 1700, 750000.00, 'Townhouse', 0.05, 3, 2),
+(9, 9, 'sold', '9703 Pine Court', '30301', 'Atlanta', 'GA', 2100, 600000.00, 'House', 0.17, 3, 3),
+(10, 10, 'sold', '10234 Maple Blvd', '89101', 'Las Vegas', 'NV', 2300, 480000.00, 'House', 0.22, 4, 3),
+(11, 11, 'sold', '11120 Birch Street', '85001', 'Phoenix', 'AZ', 2500, 530000.00, 'House', 0.25, 5, 4),
+(12, 12, 'sold', '12345 Cedar Ave', '02101', 'Boston', 'MA', 1600, 1100000.00, 'Apartment', 0.00, 2, 2),
+(13, 13, 'sold', '13098 Elm Street', '37201', 'Nashville', 'TN', 2200, 460000.00, 'House', 0.19, 3, 2),
+(14, 14, 'sold', '14802 Oak Drive', '48201', 'Detroit', 'MI', 1900, 420000.00, 'House', 0.16, 4, 2),
+(15, 15, 'sold', '15703 Pine Lane', '80201', 'Denver', 'CO', 1800, 690000.00, 'House', 0.11, 3, 2),
+(16, 17, 'unsold', '1604 Maple Dr', '32801', 'Orlando', 'FL', 1400, 300000.00, 'Condo', 0.00, 2, 2),
+(17, 6, 'unsold', '1725 Cedar St', '97201', 'Portland', 'OR', 2000, 450000.00, 'House', 0.13, 3, 2),
+(18, 9, 'unsold', '1846 Elm Ave', '78701', 'Austin', 'TX', 2200, 510000.00, 'House', 0.20, 4, 3),
+(19, 20, 'unsold', '1957 Oak Blvd', '94101', 'San Francisco', 'CA', 1200, 1100000.00, 'Condo', 0.00, 1, 1),
+(20, 14, 'unsold', '2098 Pine St', '10001', 'New York', 'NY', 1700, 1400000.00, 'Apartment', 0.00, 3, 2),
+(21, 3, 'unsold', '2211 Birch Rd', '32801', 'Orlando', 'FL', 1300, 350000.00, 'Condo', 0.00, 2, 1),
+(22, 8, 'unsold', '2375 Cedar Lane', '97201', 'Portland', 'OR', 1950, 470000.00, 'House', 0.14, 3, 2),
+(23, 11, 'unsold', '2486 Elm Street', '78701', 'Austin', 'TX', 2150, 520000.00, 'House', 0.21, 4, 3),
+(24, 15, 'unsold', '2597 Oak Drive', '94101', 'San Francisco', 'CA', 1150, 1050000.00, 'Condo', 0.00, 1, 1),
+(25, 18, 'unsold', '2678 Pine Street', '10001', 'New York', 'NY', 1650, 1350000.00, 'Apartment', 0.00, 2, 2),
+(26, 1, 'unsold', '2761 Birch Avenue', '32801', 'Orlando', 'FL', 1450, 320000.00, 'Condo', 0.00, 2, 2),
+(27, 5, 'unsold', '2845 Cedar Way', '97201', 'Portland', 'OR', 1980, 460000.00, 'House', 0.15, 3, 2),
+(28, 7, 'unsold', '2936 Elm Road', '78701', 'Austin', 'TX', 2100, 500000.00, 'House', 0.22, 4, 2),
+(29, 12, 'unsold', '3027 Oak Street', '94101', 'San Francisco', 'CA', 1100, 1080000.00, 'Condo', 0.00, 1, 1),
+(30, 4, 'unsold', '3189 Pine Lane', '10001', 'New York', 'NY', 1600, 1300000.00, 'Apartment', 0.00, 3, 2),
+(31, 2, 'Rent', '3301 Cedar Park', '90001', 'Los Angeles', 'CA', 850, 2500.00, 'Apartment', 0.00, 1, 1),
+(32, 10, 'Rent', '3420 Birch Street', '60601', 'Chicago', 'IL', 900, 2200.00, 'Apartment', 0.00, 2, 1),
+(33, 16, 'Rent', '3539 Oak Avenue', '77001', 'Houston', 'TX', 1200, 1800.00, 'Townhouse', 0.05, 2, 2),
+(34, 13, 'Rent', '3658 Pine Road', '30301', 'Atlanta', 'GA', 1100, 1950.00, 'Condo', 0.00, 2, 2),
+(35, 19, 'Rent', '3767 Elm Drive', '98101', 'Seattle', 'WA', 750, 2100.00, 'Studio', 0.00, 0, 1),
+(36, 4, 'Rent', '3886 Birch Lane', '02101', 'Boston', 'MA', 950, 2300.00, 'Apartment', 0.00, 1, 1),
+(37, 18, 'Rent', '3995 Cedar Plaza', '33101', 'Miami', 'FL', 1000, 2200.00, 'Apartment', 0.00, 2, 2),
+(38, 7, 'Rent', '4014 Oak Street', '10001', 'New York', 'NY', 700, 3500.00, 'Studio', 0.00, 0, 1),
+(39, 12, 'Rent', '4133 Pine Avenue', '94101', 'San Francisco', 'CA', 800, 2700.00, 'Condo', 0.00, 1, 1),
+(40, 1, 'Rent', '4252 Birch Road', '90001', 'Los Angeles', 'CA', 1300, 3100.00, 'Apartment', 0.00, 3, 2),
+(41, 9, 'Rent', '4371 Elm Street', '60601', 'Chicago', 'IL', 1150, 2500.00, 'Condo', 0.00, 2, 2),
+(42, 5, 'Rent', '4480 Oak Lane', '77001', 'Houston', 'TX', 1400, 1600.00, 'Townhouse', 0.06, 3, 2),
+(43, 3, 'Rent', '4599 Pine Road', '30301', 'Atlanta', 'GA', 1050, 2000.00, 'Condo', 0.00, 2, 1),
+(44, 8, 'Rent', '4718 Elm Drive', '98101', 'Seattle', 'WA', 800, 2050.00, 'Studio', 0.00, 0, 1),
+(45, 6, 'Rent', '4837 Birch Avenue', '02101', 'Boston', 'MA', 1200, 2400.00, 'Apartment', 0.00, 2, 2);
+
