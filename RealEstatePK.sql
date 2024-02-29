@@ -1,5 +1,5 @@
-create database RealEstate;
-use RealEstate;
+create database RealEstate_Final;
+use RealEstate_Final;
 
 -- Creating User table
 CREATE TABLE Users (
@@ -7,13 +7,13 @@ CREATE TABLE Users (
     Name VARCHAR(255),
     email VARCHAR(255),
     mobileNumber VARCHAR(20),
-    BuyerSeller ENUM('Buyer', 'Seller', 'Both'),
+    BuyerSellerAgent ENUM('Buyer', 'Seller', 'Both', 'Agent'),
     Address VARCHAR(255)
 );
 
 -- Creating Agent table
 CREATE TABLE Agents (
-    AgentID INT PRIMARY KEY,
+    AgentID INT primary key,
     UserID INT,
     AgentCompany VARCHAR(255),
     -- propertyID INT,
@@ -100,7 +100,7 @@ CREATE TABLE RentProperties (
 
 
 -- Insert 30 records into the Users table with fake data
-INSERT INTO Users (UserID, Name, email, mobileNumber, BuyerSeller, Address)
+INSERT INTO Users (UserID, Name, email, mobileNumber, BuyerSellerAgent, Address)
 VALUES
     (1, 'John Doe', 'john.doe@example.com', '123-456-7890', 'Buyer', '123 Main St, Anytown, USA'),
     (2, 'Jane Smith', 'jane.smith@example.com', '987-654-3210', 'Seller', '456 Elm St, Othertown, USA'),
@@ -135,39 +135,43 @@ VALUES
     (27, 'Kevin Ramirez', 'kevin.ramirez@example.com', '777-888-9999', 'Both', '321 Cedar Ln, Anytown, USA'),
     (28, 'Megan Carter', 'megan.carter@example.com', '111-222-3333', 'Buyer', '987 Elm St, Anycity, USA'),
     (29, 'Joshua Barnes', 'joshua.barnes@example.com', '444-555-6666', 'Seller', '654 Maple Dr, Somewhere, USA'),
-    (30, 'Heather Cooper', 'heather.cooper@example.com', '777-888-9999', 'Both', '123 Birch Ave, Othertown, USA');
+    (30, 'Heather Cooper', 'heather.cooper@example.com', '777-888-9999', 'Both', '123 Birch Ave, Othertown, USA'),
+    (31, 'Alice Johnson', 'alice.johnson@realestate.com', '202-555-0178', 'Agent', '101 Realty Drive, Cityville, USA'),
+    (32, 'Bob Smith', 'bob.smith@realestate.com', '202-555-0199', 'Agent', '202 Estate Road, Townsville, USA'),
+    (33, 'Cathy Daniels', 'cathy.daniels@realestate.com', '202-555-0143', 'Agent', '303 Agent Ave, Urbantown, USA'),
+    (34, 'David Green', 'david.green@realestate.com', '202-555-0124', 'Agent', '404 Property Pl, Cityscape, USA'),
+    (35, 'Eva Lawrence', 'eva.lawrence@realestate.com', '202-555-0155', 'Agent', '505 Realty Row, Suburbia, USA'),
+    (36, 'Frank Moore', 'frank.moore@realestate.com', '202-555-0186', 'Agent', '606 Listing Lane, Metropolis, USA'),
+    (37, 'Gina Hall', 'gina.hall@realestate.com', '202-555-0137', 'Agent', '707 Housing St, Smalltown, USA'),
+    (38, 'Henry Allen', 'henry.allen@realestate.com', '202-555-0118', 'Agent', '808 Home Blvd, Villagetown, USA'),
+    (39, 'Ivy Wilson', 'ivy.wilson@realestate.com', '202-555-0169', 'Agent', '909 Estate St, Capital City, USA'),
+    (40, 'Jake Foster', 'jake.foster@realestate.com', '202-555-0140', 'Agent', '1010 Property Ave, Seaside, USA');
 
 
 select count(*) from Users
-where BuyerSeller in ('Seller', 'both'); 
+where BuyerSellerAgent in ('Seller', 'Both'); 
 
 
 -- Agents table now
-
+delete from agents;
+set sql_safe_updates = 0;
 
 
 INSERT INTO Agents (AgentID, UserID, AgentCompany, Agent_Name, Experience, Location, Languages)
 VALUES
-    (1, 2, 'Prestige Realty', 'Jane Smith', 5, 'San Francisco, CA', 'English, Spanish'),
-    (2, 3, 'Homeward Bound', 'Michael Johnson', 7, 'Austin, TX', 'English, French'),
-    (3, 5, 'NextHome Leaders', 'David Lee', 8, 'Miami, FL', 'English, Portuguese'),
-    (4, 6, 'Skyline Agents', 'Sarah Brown', 4, 'Seattle, WA', 'English, German'),
-    (5, 8, 'Horizon Properties', 'Amanda Martinez', 6, 'Denver, CO', 'English, Italian'),
-    (6, 9, 'Prime Estate', 'Christopher Harris', 7, 'Boston, MA', 'English, Russian'),
-    (7, 11, 'Elite Realty Group', 'Matthew Young', 9, 'Chicago, IL', 'English, Mandarin'),
-    (8, 12, 'Trusty Homes', 'Jennifer King', 3, 'Las Vegas, NV', 'English, Japanese'),
-    (9, 14, 'Home Connect', 'Lisa Rodriguez', 11, 'Nashville, TN', 'English, Korean'),
-    (10, 15, 'Global Realtors', 'Mark Lewis', 2, 'New York, NY', 'English, Dutch'),
-    (11, 17, 'CityScape Realtors', 'Jason Adams', 5, 'Los Angeles, CA', 'English, Spanish'),
-    (12, 18, 'Sunshine Properties', 'Michelle Cook', 8, 'Orlando, FL', 'English, French'),
-    (13, 20, 'MountainView Realty', 'Jessica Turner', 10, 'Boulder, CO', 'English, German'),
-    (14, 21, 'Lakeside Homes', 'Ryan Parker', 6, 'Minneapolis, MN', 'English, Spanish'),
-    (15, 23, 'GreenLeaf Realty', 'Justin Diaz', 4, 'Portland, OR', 'English, Mandarin'),
-    (16, 24, 'Heritage Homes', 'Ashley Martinez', 7, 'Charleston, SC', 'English, Italian'),
-    (17, 26, 'Metro Realtors', 'Brittany Hill', 5, 'Detroit, MI', 'English, Arabic'),
-    (18, 27, 'Coastal Estates', 'Kevin Ramirez', 9, 'San Diego, CA', 'English, French'),
-    (19, 29, 'Pioneer Properties', 'Joshua Barnes', 3, 'Dallas, TX', 'English, Russian'),
-    (20, 30, 'Highland Realty', 'Heather Cooper', 8, 'Phoenix, AZ', 'English, Korean');
+    (1, 32, 'Prestige Realty', 'Jane Smith', 5, 'San Francisco, CA', 'English, Spanish'),
+    (2, 33, 'Homeward Bound', 'Michael Johnson', 7, 'Austin, TX', 'English, French'),
+    (3, 35, 'NextHome Leaders', 'David Lee', 8, 'Miami, FL', 'English, Portuguese'),
+    (4, 36, 'Skyline Agents', 'Sarah Brown', 4, 'Seattle, WA', 'English, German'),
+    (5, 38, 'Horizon Properties', 'Amanda Martinez', 6, 'Denver, CO', 'English, Italian'),
+    (6, 39, 'Prime Estate', 'Christopher Harris', 7, 'Boston, MA', 'English, Russian'),
+    (7, 31, 'Elite Realty Group', 'Matthew Young', 9, 'Chicago, IL', 'English, Mandarin'),
+    (8, 37, 'Trusty Homes', 'Jennifer King', 3, 'Las Vegas, NV', 'English, Japanese'),
+    (9, 34, 'Home Connect', 'Lisa Rodriguez', 11, 'Nashville, TN', 'English, Korean'),
+    (10, 40, 'Global Realtors', 'Mark Lewis', 2, 'New York, NY', 'English, Dutch');
+
+
+SELECT distinct UserID FROM Agents;
 
 
 select userId, agentid from agents;
@@ -225,4 +229,15 @@ VALUES
 (43, 3, 'Rent', '4599 Pine Road', '30301', 'Atlanta', 'GA', 1050, 2000.00, 'Condo', 0.00, 2, 1),
 (44, 8, 'Rent', '4718 Elm Drive', '98101', 'Seattle', 'WA', 800, 2050.00, 'Studio', 0.00, 0, 1),
 (45, 6, 'Rent', '4837 Birch Avenue', '02101', 'Boston', 'MA', 1200, 2400.00, 'Apartment', 0.00, 2, 2);
+
+
+
+
+-- Doing Sold properties now
+select Userid from Users
+where buyerseller in ('buyer', 'both');
+
+
+
+
 
