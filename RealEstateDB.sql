@@ -97,5 +97,18 @@ VALUES
 (12, 'Katherine Thomas', 'katherine.t@example.com', '0001112222', 'Buyer', 'Seattle', 4.2),
 (13, 'William Jackson', 'william.j@example.com', '1112223333', 'Both', 'Denver', 4.9),
 (14, 'Elizabeth Brown', 'elizabeth.b@example.com', '2223394444', 'Seller', 'Washington DC', 4.5),
-(15, 'Joseph Garcia', 'joseph.g@example.com', '3334495555', 'Buyer', 'Las Vegas',  4.1);
+(15, 'Joseph Garcia', 'joseph.g@example.com', '3334495555', 'Buyer', 'Las Vegas',  4.1),
+(16, 'Samantha White', 'samantha.w@example.com', '4445596666', 'Seller', 'Chicago', 4.2),
+(17, 'Daniel Martinez', 'daniel.m@example.com', '5556697777', 'Buyer', 'Boston', 4.3),
+(18, 'Olivia Lopez', 'olivia.l@example.com', '6667798888', 'Seller', 'Austin', 4.8),
+(19, 'Matthew Adams', 'matthew.a@example.com', '7777899999', 'Buyer', 'Portland', 4.6),
+(20, 'Ava Scott', 'ava.s@example.com', '8887900000', 'Seller', 'San Francisco', 4.0),
+(21, 'Michelle Thompson', 'michelle.t@example.com', '4445996666', 'Seller', 'Boston', 4.6),
+(22, 'Daniel Martinez', 'daniel.martinez@example.com', '5556997777', 'Buyer', 'Philadelphia', 4.3),
+(23, 'Linda Nguyen', 'linda.n@example.com', '6667998888', 'Seller', 'San Francisco', 4.7),
+(24, 'Steven Wright', 'steven.w@example.com', '7777999999', 'Buyer', 'Portland', 4.2),
+(25, 'Samantha Clark', 'samantha.c@example.com', '8889900000', 'Seller', 'Austin', 4.4),
+(26, 'Steve Smith', 'steve.smith@example.com', '8889900012', 'Both', 'Chicago', 3.9),
+(27, 'Virat Kohli', 'v.kohli@example.com', '8889900013', 'Both', 'Denver', 2.2),
+(28, 'David Warner', 'david.warner@example.com', '8889900014', 'Both', 'Kansas', 4.8);
 
