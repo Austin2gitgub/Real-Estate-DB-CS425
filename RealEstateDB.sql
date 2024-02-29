@@ -110,5 +110,23 @@ VALUES
 (25, 'Samantha Clark', 'samantha.c@example.com', '8889900000', 'Seller', 'Austin', 4.4),
 (26, 'Steve Smith', 'steve.smith@example.com', '8889900012', 'Both', 'Chicago', 3.9),
 (27, 'Virat Kohli', 'v.kohli@example.com', '8889900013', 'Both', 'Denver', 2.2),
-(28, 'David Warner', 'david.warner@example.com', '8889900014', 'Both', 'Kansas', 4.8);
+(28, 'David Warner', 'david.warner@example.com', '8889900014', 'Both', 'Kansas', 4.8),
+(29, 'Sophia Martinez', 'sophia.m@example.com', '9991002003', 'Buyer', 'Orlando', 4.4),
+(30, 'Ethan Taylor', 'ethan.t@example.com', '9992003004', 'Seller', 'Atlanta', 4.1),
+(31, 'Isabella Wilson', 'isabella.w@example.com', '9993004005', 'Both', 'Nashville', 4.6),
+(32, 'Mason Brown', 'mason.b@example.com', '9994005006', 'Seller', 'Baltimore', 4.2),
+(33, 'Emma Jones', 'emma.j@example.com', '9995006007', 'Buyer', 'Raleigh', 4.5),
+(34, 'Oliver Garcia', 'oliver.g@example.com', '9996007008', 'Seller', 'Tampa', 3.8),
+(35, 'Ava Smith', 'ava.smith@example.com', '9997008009', 'Both', 'Minneapolis', 4.0),
+(36, 'Charlotte Davis', 'charlotte.d@example.com', '9998009010', 'Buyer', 'St. Louis', 4.7),
+(37, 'Noah Miller', 'noah.m@example.com', '9999010020', 'Seller', 'Las Vegas', 4.3),
+(38, 'Mia Rodriguez', 'mia.r@example.com', '9991020030', 'Both', 'Charlotte', 4.1),
+(39, 'Liam Anderson', 'liam.a@example.com', '9992030040', 'Seller', 'Indianapolis', 4.4),
+(40, 'Amelia Thomas', 'amelia.t@example.com', '9993040050', 'Buyer', 'Columbus', 4.3),
+(41, 'James Wilson', 'james.w@example.com', '9994050060', 'Seller', 'Fort Worth', 4.5),
+(42, 'Harper Martinez', 'harper.m@example.com', '9995060070', 'Both', 'Jacksonville', 4.2),
+(43, 'Elijah Roberts', 'elijah.r@example.com', '9996070080', 'Buyer', 'San Francisco', 4.6),
+(44, 'Sophie Green', 'sophie.g@example.com', '9997080090', 'Seller', 'Memphis', 4.0),
+(45, 'Lucas Clark', 'lucas.c@example.com', '9998090100', 'Both', 'New Orleans', 4.3);
+
 
