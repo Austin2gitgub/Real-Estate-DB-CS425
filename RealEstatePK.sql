@@ -322,4 +322,179 @@ VALUES
 
 
 
+
+-- Testing
+
+select * from soldproperties INNER JOIN properties ON soldproperties.PropertyID = Properties.PropertyID;
+
+-- Negotiations might be a buisness logic
+
 -- Pranav Kuchibhotla(You can call me SQL god :)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Views
+
+-- Number of properties sold by each agent
+
+CREATE VIEW AgentSales AS
+SELECT AgentID, COUNT(*) AS TotalSales FROM SoldProperties
+GROUP BY AgentID;
+
+-- Properties Listing Views
+
+CREATE VIEW PropertiesListings AS
+SELECT p.PropertyID, p.Address, p.PropertyType, IFNULL(sp.SoldPrice, up.Price) AS Price, IF(sp.SoldDate IS NULL, 'Available', 'Sold') AS Status FROM properties p
+LEFT JOIN SoldProperties sp ON p.PropertyID = sp.PropertyID
+LEFT JOIN UnsoldProperties up ON p.PropertyID = up.PropertyID;
+
+-- Agent performances
+
+CREATE VIEW AgentPerformance AS
+SELECT AgentID, COUNT(*) AS PropertiesSold, SUM(SoldPrice) AS TotalSalesValue, AVG(SoldPrice) AS AverageSalePrice FROM SoldProperties
+GROUP BY AgentID;
+
+-- A view to analyze the sales trends over time
+
+CREATE VIEW MonthlySalesTrends AS
+SELECT YEAR(SoldDate) AS Year, MONTH(SoldDate) AS Month, COUNT(*) AS PropertiesSold, SUM(SoldPrice) AS TotalSalesValue FROM SoldProperties
+GROUP BY YEAR(SoldDate), MONTH(SoldDate);
+
+-- Active Listings along with Agent Information
+
+CREATE VIEW ActiveListingsWithAgents AS
+SELECT up.PropertyID, up.Price, up.daysOnMarket, up.Status, u.UserID AS AgentID, u.FirstName, u.LastName FROM UnsoldProperties up
+JOIN Users u ON up.AgentID = u.UserID
+WHERE up.Status = 'Active';
+
+-- A view focusing on properties available for rent
+
+CREATE VIEW RentalPropertiesOverview AS
+SELECT rp.PropertyID, rp.RentPrice, u1.UserID AS AgentID, u1.FirstName AS AgentFirstName, u1.LastName AS AgentLastName, u2.UserID AS TenantID, u2.FirstName AS TenantFirstName, u2.LastName AS TenantLastName FROM RentProperties rp
+JOIN Users u1 ON rp.AgentID = u1.UserID
+LEFT JOIN Users u2 ON rp.TenantID = u2.UserID;
+
+-- Most Recent Sales
+
+CREATE VIEW RecentSales AS
+SELECT sp.PropertyID, sp.SoldPrice, sp.SoldDate, u.UserID AS AgentID, u.FirstName, u.LastName
+FROM SoldProperties sp
+JOIN Users u ON sp.AgentID = u.UserID
+ORDER BY sp.SoldDate DESC;
+
+
+-- Do more like filterling properties by location, type, price, and more etc
+
+
+
+
+
+-- IDK INDEXS, SO HERE'S CHATGPT'S WORK
+
+-- An index on PropertyID in the properties table would speed up lookups, joins, and searches based on PropertyID.
+CREATE INDEX idx_property_id ON properties(PropertyID);
+
+-- Address on Properties Table: If queries often search by address, an index here would help.
+CREATE INDEX idx_address ON properties(Address);
+
+-- AgentID on SoldProperties: Improves the performance of queries filtering by AgentID, common in reporting and analytics.
+CREATE INDEX idx_soldproperties_agentid ON SoldProperties(AgentID);
+-- SoldDate on SoldProperties: Helps with queries that sort or filter by the sale date, useful for generating sales reports or trends over time.
+CREATE INDEX idx_solddate ON SoldProperties(SoldDate);
+
+
+-- Status on UnsoldProperties: An index on the Status column can speed up queries looking for properties with specific statuses like 'Active' or 'Pre-release'.
+CREATE INDEX idx_unsold_status ON UnsoldProperties(Status);
+
+-- daysOnMarket on UnsoldProperties: Optimizes queries sorting or filtering properties based on how long they've been on the market.
+CREATE INDEX idx_days_on_market ON UnsoldProperties(daysOnMarket);
+
+-- RentPrice on RentProperties: For queries filtering or sorting based on rental price.
+CREATE INDEX idx_rentprice ON RentProperties(RentPrice);
+
+-- buyerSellerAgent on Users: If queries often filter by the role of the user (buyer, seller, agent), an index here would be beneficial.
+CREATE INDEX idx_role ON Users(buyerSellerAgent);
+
+-- Composite Index on SoldProperties for Date and Price: If there are common queries that filter or sort by both SoldDate and SoldPrice, a composite index could be useful.
+CREATE INDEX idx_solddate_soldprice ON SoldProperties(SoldDate, SoldPrice);
+
+
+
+
+
+
+-- Agregated Sals report
+
+CREATE TEMPORARY TABLE MonthlySales AS
+SELECT
+    EXTRACT(MONTH FROM SoldDate) AS SaleMonth,
+    EXTRACT(YEAR FROM SoldDate) AS SaleYear,
+    COUNT(*) AS TotalSales,
+    AVG(SoldPrice) AS AveragePrice
+FROM SoldProperties
+GROUP BY SaleMonth, SaleYear;
+
+
+-- Top Performing Agents
+
+CREATE TEMPORARY TABLE AgentPerformance AS
+SELECT
+    AgentID,
+    COUNT(*) AS PropertiesSold,
+    SUM(SoldPrice) AS TotalSalesValue
+FROM SoldProperties
+GROUP BY AgentID
+ORDER BY TotalSalesValue DESC;
+
+
+--  Properties on Market Duration
+CREATE TEMPORARY TABLE MarketDuration AS
+SELECT
+    p.PropertyID,
+    DATEDIFF(sp.SoldDate, p.ListDate) AS DaysOnMarket
+FROM Properties p
+JOIN SoldProperties sp ON p.PropertyID = sp.PropertyID;
+
+-- Comparison of Listed vs. Sold Prices
+CREATE TEMPORARY TABLE PriceComparison AS
+SELECT
+    p.PropertyID,
+    p.Price AS ListedPrice,
+    sp.SoldPrice AS SoldPrice,
+    (sp.SoldPrice - p.Price) AS PriceDifference
+FROM Properties p
+JOIN SoldProperties sp ON p.PropertyID = sp.PropertyID;
+
+
+
+
+
+
+
+
+-- Triggers, idk you guys suffer
+
+
+-- Stored procedures
+
+-- Functions
+
