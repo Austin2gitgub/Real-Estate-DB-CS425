@@ -1,7 +1,7 @@
 create database RealEstate_Final;
 use RealEstate_Final;
 
--- Creating User table
+-- -- Creating User table
 CREATE TABLE Users (
     UserID INT PRIMARY KEY,
     Name VARCHAR(255),
@@ -11,7 +11,7 @@ CREATE TABLE Users (
     Address VARCHAR(255)
 );
 
--- Creating Agent table
+-- -- Creating Agent table
 CREATE TABLE Agents (
     AgentID INT primary key,
     UserID INT,
@@ -27,7 +27,7 @@ CREATE TABLE Agents (
     -- FOREIGN KEY (propertyID) REFERENCES Properties(PropertyID)
 );
 
--- Creating Properties table
+-- -- Creating Properties table
 CREATE TABLE Properties (
     PropertyID INT PRIMARY KEY,
     AgentID INT,
@@ -45,10 +45,10 @@ CREATE TABLE Properties (
     FOREIGN KEY (AgentID) REFERENCES Agents(AgentID)
 );
 
--- Adjusting the Agent table to remove propertyID since it creates a circular dependency and is not practical
--- ALTER TABLE Agents DROP COLUMN propertyID;
+-- -- Adjusting the Agent table to remove propertyID since it creates a circular dependency and is not practical
+-- -- ALTER TABLE Agents DROP COLUMN propertyID;
 
--- Creating SoldProperties table
+-- -- Creating SoldProperties table
 CREATE TABLE SoldProperties (
     Sold_SNumber INT PRIMARY KEY,
     PropertyID INT,
@@ -63,8 +63,8 @@ CREATE TABLE SoldProperties (
     FOREIGN KEY (SellerID) REFERENCES Users(UserID)
 );
 
--- Creating UnsoldProperties table
--- drop table unsoldproperties;
+-- -- Creating UnsoldProperties table
+-- -- drop table unsoldproperties;
 CREATE TABLE UnsoldProperties (
     Unsold_SNumber INT PRIMARY KEY,
     PropertyID INT,
@@ -78,8 +78,8 @@ CREATE TABLE UnsoldProperties (
     FOREIGN KEY (SellerID) REFERENCES Users(UserID)
 );
 
--- Creating RentProperties table
--- drop table rentproperties;
+-- -- Creating RentProperties table
+-- -- drop table rentproperties;
 CREATE TABLE RentProperties (
     Rent_SNumber INT PRIMARY KEY,
     PropertyID INT,
@@ -95,15 +95,15 @@ CREATE TABLE RentProperties (
 );
 
 
--- Created tables
+-- -- Created tables
 
 
 
--- inserting data now
+-- -- inserting data now
 
 
 
--- Insert 30 records into the Users table with fake data
+-- -- Insert 30 records into the Users table with fake data
 INSERT INTO Users (UserID, Name, email, mobileNumber, BuyerSellerAgent, Address)
 VALUES
     (1, 'John Doe', 'john.doe@example.com', '123-456-7890', 'Buyer', '123 Main St, Anytown, USA'),
@@ -152,13 +152,13 @@ VALUES
     (40, 'Jake Foster', 'jake.foster@realestate.com', '202-555-0140', 'Agent', '1010 Property Ave, Seaside, USA');
 
 
-select count(*) from Users
-where BuyerSellerAgent in ('Seller', 'Both'); 
+-- select count(*) from Users
+-- where BuyerSellerAgent in ('Seller', 'Both'); 
 
 
--- Agents table now
-delete from agents;
-set sql_safe_updates = 0;
+-- -- Agents table now
+-- delete from agents;
+-- set sql_safe_updates = 0;
 
 
 INSERT INTO Agents (AgentID, UserID, AgentCompany, Agent_Name, Experience, Location, Languages)
@@ -175,14 +175,14 @@ VALUES
     (10, 40, 'Global Realtors', 'Mark Lewis', 2, 'New York, NY', 'English, Dutch');
 
 
-SELECT distinct UserID FROM Agents;
+-- SELECT distinct UserID FROM Agents;
 
 
-select userId, agentid from agents;
+-- select userId, agentid from agents;
 
 
--- Time for the Properties tables now lessgo
---  The lot size is in acres btw
+-- -- Time for the Properties tables now lessgo
+-- --  The lot size is in acres btw
 
 
 
@@ -237,11 +237,11 @@ VALUES
 
 
 
--- Doing Sold properties now
-select Userid from Users
-where buyersellerAgent in ('seller', 'both');
+-- -- Doing Sold properties now
+-- select Userid from Users
+-- where buyersellerAgent in ('seller', 'both');
 
-select * from properties;
+-- select * from properties;
 
 
 
@@ -264,14 +264,14 @@ VALUES
 (15, 15, 690000.00, '2024-05-05', 6, 22, 24);
 
 
-    
--- We done soldproperties, gonna be easy now finallyyyyyyyy
+--     
+-- -- We done soldproperties, gonna be easy now finallyyyyyyyy
 
 
 
 
 
--- Lets do unsold now
+-- -- Lets do unsold now
 
 
 INSERT INTO UnsoldProperties (Unsold_SNumber, PropertyID, Price, SellerID, AgentID, daysOnMarket, Status)
@@ -295,7 +295,7 @@ VALUES
 
 
 
--- Rent now
+-- -- Rent now
 
 
 
@@ -323,15 +323,13 @@ VALUES
 
 
 
--- Testing
+-- -- Testing
 
-select * from soldproperties INNER JOIN properties ON soldproperties.PropertyID = Properties.PropertyID;
+-- select * from soldproperties INNER JOIN properties ON soldproperties.PropertyID = Properties.PropertyID;
 
--- Negotiations might be a buisness logic
+-- -- Negotiations might be a buisness logic
 
--- Pranav Kuchibhotla(You can call me SQL god :)
-
-
+-- -- Pranav Kuchibhotla(You can call me SQL god :)
 
 
 
@@ -350,6 +348,8 @@ select * from soldproperties INNER JOIN properties ON soldproperties.PropertyID 
 
 
 
+
+use RealEstate_Final;
 
 
 -- Views
@@ -363,7 +363,7 @@ GROUP BY AgentID;
 -- Properties Listing Views
 
 CREATE VIEW PropertiesListings AS
-SELECT p.PropertyID, p.Address, p.PropertyType, IFNULL(sp.SoldPrice, up.Price) AS Price, IF(sp.SoldDate IS NULL, 'Available', 'Sold') AS Status FROM properties p
+SELECT p.PropertyID, p.Address, p.Type, IFNULL(sp.SoldPrice, up.Price) AS Price, IF(sp.SoldDate IS NULL, 'Available', 'Sold') AS Status FROM properties p
 LEFT JOIN SoldProperties sp ON p.PropertyID = sp.PropertyID
 LEFT JOIN UnsoldProperties up ON p.PropertyID = up.PropertyID;
 
@@ -382,21 +382,21 @@ GROUP BY YEAR(SoldDate), MONTH(SoldDate);
 -- Active Listings along with Agent Information
 
 CREATE VIEW ActiveListingsWithAgents AS
-SELECT up.PropertyID, up.Price, up.daysOnMarket, up.Status, u.UserID AS AgentID, u.FirstName, u.LastName FROM UnsoldProperties up
+SELECT up.PropertyID, up.Price, up.daysOnMarket, up.Status, u.UserID AS AgentID, u.Name FROM UnsoldProperties up
 JOIN Users u ON up.AgentID = u.UserID
 WHERE up.Status = 'Active';
 
 -- A view focusing on properties available for rent
 
 CREATE VIEW RentalPropertiesOverview AS
-SELECT rp.PropertyID, rp.RentPrice, u1.UserID AS AgentID, u1.FirstName AS AgentFirstName, u1.LastName AS AgentLastName, u2.UserID AS TenantID, u2.FirstName AS TenantFirstName, u2.LastName AS TenantLastName FROM RentProperties rp
+SELECT rp.PropertyID, rp.RentPrice, u1.UserID AS AgentID, u1.Name AS AgentName, u2.UserID AS TenantID, u2.Name  AS TenantName FROM RentProperties rp
 JOIN Users u1 ON rp.AgentID = u1.UserID
 LEFT JOIN Users u2 ON rp.TenantID = u2.UserID;
 
 -- Most Recent Sales
 
 CREATE VIEW RecentSales AS
-SELECT sp.PropertyID, sp.SoldPrice, sp.SoldDate, u.UserID AS AgentID, u.FirstName, u.LastName
+SELECT sp.PropertyID, sp.SoldPrice, sp.SoldDate, u.UserID AS AgentID, u.Name
 FROM SoldProperties sp
 JOIN Users u ON sp.AgentID = u.UserID
 ORDER BY sp.SoldDate DESC;
