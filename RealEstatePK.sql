@@ -629,5 +629,89 @@ DELIMITER ;
 
 
 -- Functions
+-- Function to calculate sales commission
+DELIMITER //
+CREATE FUNCTION sales_commission(sale_price DECIMAL(10,2))
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+  DECLARE commission DECIMAL(10,2);
+  
+  SET commission = sale_price * 0.06;
+  
+  RETURN (commission);
+END //
+DELIMITER ;
+
+-- Function to lookup agent name
+DELIMITER //
+CREATE FUNCTION get_agent_name(agent_id INT)
+RETURNS VARCHAR(255)
+READS SQL DATA
+BEGIN
+  DECLARE a_name VARCHAR(255);
+  
+  SELECT Name INTO a_name
+    FROM Users
+  WHERE UserID = agent_id;
+  
+  RETURN (a_name);
+END //
+DELIMITER ;
+
+-- Function to format property address
+DELIMITER //
+CREATE FUNCTION format_address(street VARCHAR(255), city VARCHAR(255), state VARCHAR(255), zip VARCHAR(10))
+RETURNS VARCHAR(255)
+DETERMINISTIC
+BEGIN
+  DECLARE address VARCHAR(255);
+
+  SET address = CONCAT(street, ', ', city, ', ', state, ' ', zip);
+  
+  RETURN (address);
+END //
+DELIMITER ;
+
+-- Function to get days on market
+DELIMITER //
+CREATE FUNCTION days_on_market(p_id INT) 
+RETURNS INT
+DETERMINISTIC
+BEGIN
+  DECLARE dom INT;
+  
+  SELECT DATEDIFF(CURRENT_DATE(), ListDate) 
+    INTO dom
+  FROM Properties
+  WHERE PropertyID = p_id;
+
+  RETURN (dom);
+END //
+DELIMITER ;
+
+-- Function to calculate property price per square foot:
+DELIMITER //
+CREATE FUNCTION price_per_sqft(property_id INT) 
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+  DECLARE sqft INT;
+  DECLARE price DECIMAL(10,2);
+  DECLARE ppg DECIMAL(10,2);
+  
+  SELECT SquareFeet, Price 
+    INTO sqft, price
+  FROM Properties
+  WHERE PropertyID = property_id;
+  
+  SET ppg = price / sqft;
+  
+  RETURN (ppg);  
+END //
+DELIMITER ;
+
+
+
 
 
