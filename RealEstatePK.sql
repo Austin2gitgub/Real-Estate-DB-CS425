@@ -528,6 +528,10 @@ END;
 //
 DELIMITER ;
 
+-- Trigger to update the status of a property to 'Sold' when it is added to the SoldProperties table
+
+
+
 
 
 
@@ -564,7 +568,55 @@ END;
 //
 DELIMITER ;
 
+-- Stored Procedure to retrieve all properties listed by a specific agent
+DELIMITER //
+CREATE PROCEDURE GetAgentProperties (IN agentID INT)
+BEGIN
+    SELECT *
+    FROM Properties
+    WHERE AgentID = agentID;
+END //
+DELIMITER ;
+
+-- Stored Procedure to add Properties
+DELIMITER //
+CREATE PROCEDURE AddProperty(
+    IN p_Address VARCHAR(255),
+    IN p_Type VARCHAR(50),
+    IN p_Price DECIMAL(10, 2),
+    IN p_AgentID INT,
+    IN p_ListingDate DATE
+)
+BEGIN
+    INSERT INTO Properties(Address, Type, Price, AgentID, ListingDate)
+    VALUES (p_Address, p_Type, p_Price, p_AgentID, p_ListingDate);
+END //
+DELIMITER ;
+
+-- Stored Procedure to delete Properties
+DELIMITER //
+CREATE PROCEDURE DeleteProperty(IN p_PropertyID INT)
+BEGIN
+    DELETE FROM Properties WHERE PropertyID = p_PropertyID;
+END //
+DELIMITER ;
+
+-- Stored Procedure to update price
+DELIMITER //
+CREATE PROCEDURE UpdatePropertyPrice(
+    IN p_PropertyID INT,
+    IN p_NewPrice DECIMAL(10, 2)
+)
+BEGIN
+    UPDATE Properties
+    SET Price = p_NewPrice
+    WHERE PropertyID = p_PropertyID;
+END //
+DELIMITER ;
+
+
 
 
 -- Functions
+
 
