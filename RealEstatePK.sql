@@ -487,14 +487,84 @@ JOIN SoldProperties sp ON p.PropertyID = sp.PropertyID;
 
 
 
+-- Triggers
+
+-- Trigger to Update Property Status:
+DELIMITER //
+CREATE TRIGGER Update_Property_Status
+AFTER INSERT ON SoldProperties
+FOR EACH ROW
+BEGIN
+    UPDATE Properties
+    SET Status = 'sold'
+    WHERE PropertyID = NEW.PropertyID;
+END;
+//
+DELIMITER ;
+
+-- Trigger to Update Agent Experience:
+DELIMITER //
+CREATE TRIGGER Update_Agent_Experience
+BEFORE UPDATE ON Agents
+FOR EACH ROW
+BEGIN
+    IF NEW.Experience < OLD.Experience THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Experience cannot be decreased.';
+    END IF;
+END;
+//
+DELIMITER ;
+
+-- Trigger to Update Property Price:
+DELIMITER //
+CREATE TRIGGER Update_Property_Price
+AFTER INSERT ON PriceChanges
+FOR EACH ROW
+BEGIN
+    UPDATE Properties
+    SET Price = NEW.NewPrice
+    WHERE PropertyID = NEW.PropertyID;
+END;
+//
+DELIMITER ;
 
 
 
 
--- Triggers, idk you guys suffer
+
+
+
 
 
 -- Stored procedures
+
+-- Stored Procedure to Retrieve Sold Properties by Agent:
+DELIMITER //
+CREATE PROCEDURE Get_Sold_Properties_By_Agent(IN agent_id INT)
+BEGIN
+    SELECT * FROM SoldProperties WHERE AgentID = agent_id;
+END;
+//
+DELIMITER ;
+
+-- Stored Procedure to Insert a New Property:
+DELIMITER //
+CREATE PROCEDURE Insert_New_Property(
+    IN agent_id INT, 
+    IN status VARCHAR(255), 
+    IN address VARCHAR(255), 
+    IN price DECIMAL(10,2), 
+    IN beds INT, 
+    IN baths INT
+)
+BEGIN
+    INSERT INTO Properties (AgentID, Status, Address, Price, Beds, Baths)
+    VALUES (agent_id, status, address, price, beds, baths);
+END;
+//
+DELIMITER ;
+
+
 
 -- Functions
 
