@@ -528,7 +528,18 @@ END;
 //
 DELIMITER ;
 
--- Trigger to update the status of a property to 'Sold' when it is added to the SoldProperties table
+-- Trigger to update the status of a property to 'rent'
+DELIMITER $$
+CREATE TRIGGER Update_property_status_to_rent
+AFTER INSERT ON RentProperties
+FOR EACH ROW
+BEGIN
+  UPDATE Properties 
+    SET Status = 'Rent'
+    WHERE PropertyID = NEW.PropertyID;
+END$$  
+DELIMITER ;
+
 
 
 
