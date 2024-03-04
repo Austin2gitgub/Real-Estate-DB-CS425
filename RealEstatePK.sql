@@ -103,7 +103,7 @@ CREATE TABLE RentProperties (
 
 
 
--- -- Insert 30 records into the Users table with fake data
+-- -- Insert 30 records into the Users table
 INSERT INTO Users (UserID, Name, email, mobileNumber, BuyerSellerAgent, Address)
 VALUES
     (1, 'John Doe', 'john.doe@example.com', '123-456-7890', 'Buyer', '123 Main St, Anytown, USA'),
@@ -181,8 +181,7 @@ VALUES
 -- select userId, agentid from agents;
 
 
--- -- Time for the Properties tables now lessgo
--- --  The lot size is in acres btw
+
 
 
 
@@ -265,13 +264,12 @@ VALUES
 
 
 --     
--- -- We done soldproperties, gonna be easy now finallyyyyyyyy
 
 
 
 
 
--- -- Lets do unsold now
+
 
 
 INSERT INTO UnsoldProperties (Unsold_SNumber, PropertyID, Price, SellerID, AgentID, daysOnMarket, Status)
@@ -295,7 +293,7 @@ VALUES
 
 
 
--- -- Rent now
+
 
 
 
@@ -329,7 +327,6 @@ VALUES
 
 -- -- Negotiations might be a buisness logic
 
--- -- Pranav Kuchibhotla(You can call me SQL god :)
 
 
 
@@ -407,9 +404,6 @@ ORDER BY sp.SoldDate DESC;
 
 
 
-
--- IDK INDEXS, SO HERE'S CHATGPT'S WORK
-
 -- An index on PropertyID in the properties table would speed up lookups, joins, and searches based on PropertyID.
 CREATE INDEX idx_property_id ON properties(PropertyID);
 
@@ -442,7 +436,7 @@ CREATE INDEX idx_solddate_soldprice ON SoldProperties(SoldDate, SoldPrice);
 
 
 
--- Agregated Sals report
+-- Agregated Sales report
 
 CREATE TEMPORARY TABLE MonthlySales AS
 SELECT
