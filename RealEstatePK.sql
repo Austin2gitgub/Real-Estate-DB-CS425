@@ -713,5 +713,116 @@ DELIMITER ;
 
 
 
+-- SELECT p.PropertyType, COUNT(*) AS TotalSold
+-- FROM SoldProperties sp
+-- JOIN Properties p ON sp.PropertyID = p.PropertyID
+-- GROUP BY p.PropertyType
+-- ORDER BY TotalSold DESC;
+
+-- SELECT p.Type, COUNT(*) AS TotalSold
+-- FROM SoldProperties sp
+-- JOIN Properties p ON sp.PropertyID = p.PropertyID
+-- GROUP BY p.Type
+-- ORDER BY TotalSold DESC;
+
+-- SELECT p.City, p.State, ROUND(AVG(sp.SoldPrice),2) AS AvgSellingPrice
+-- FROM SoldProperties sp
+-- JOIN Properties p ON sp.PropertyID = p.PropertyID
+-- GROUP BY p.City, p.State
+-- ORDER BY AvgSellingPrice DESC
+
+-- SELECT a.Agent_Name, COUNT(p.PropertyID) AS NumOfProperties
+-- FROM Agents a
+-- LEFT JOIN Properties p ON a.AgentID = p.AgentID
+-- GROUP BY  Agent_Name
+
+-- SELECT 
+-- 	ROUND(100 * SUM(IF(Status = 'sold',1,0))/COUNT(*),2) AS PercentSold,
+--     ROUND(100 * SUM(IF(Status = 'unsold',1,0))/COUNT(*),2) AS PercentUnSold,
+--     ROUND(100 * SUM(IF(Status = 'rent',1,0))/COUNT(*),2) AS PercentRent
+-- FROM Properties;
+
+-- SELECT a.Agent_Name, SUM(sp.SoldPrice) AS TotalSalesValue
+-- FROM SoldProperties sp
+-- JOIN Agents a ON sp.AgentID = a.AgentID
+-- GROUP BY a.Agent_Name
+-- ORDER BY TotalSalesValue DESC
+-- LIMIT 5;
+
+-- SELECT YEAR(SoldDate) AS Year, MONTH(SoldDate) AS Month, ROUND(AVG(SoldPrice),2) AS AvgSoldPrice
+-- FROM SoldProperties
+-- GROUP BY YEAR(SoldDate), MONTH(SoldDate)
+-- ORDER BY Year, Month;
+
+-- SELECT Type, ROUND(AVG(Price / SquareFeet),2) AS AvgPricePerSqft
+-- FROM Properties
+-- GROUP BY Type;
+
+-- SELECT Address, LotSize
+-- FROM Properties
+-- WHERE LotSize > 0.15
+-- ORDER BY LotSize DESC;
+
+-- SELECT ROUND(AVG(up.daysOnMarket),2) AS AvgDaysOnMarket
+-- FROM UnsoldProperties up
+-- JOIN Properties p ON up.PropertyID = p.PropertyID;
+
+-- SELECT * 
+-- FROM properties 
+-- WHERE Status ="unsold" AND (Price BETWEEN 300000 AND 500000);
+
+-- SELECT * 
+-- FROM properties 
+-- WHERE Status='sold' AND Price > (SELECT AVG(Price) FROM properties);
+
+
+
+-- SELECT * 
+-- FROM SoldProperties 
+-- WHERE AgentID = 1;
+
+-- SELECT PropertyID, MAX(SoldDate) AS MostRecentSaleDate 
+-- FROM SoldProperties 
+-- GROUP BY PropertyID;
+
+-- SELECT AgentID, COUNT(*) AS PropertiesSold, SUM(SoldPrice) AS TotalSalesValue, ROUND(AVG(SoldPrice),2) AS AverageSalePrice 
+-- FROM SoldProperties 
+-- GROUP BY AgentID;
+
+-- SELECT * 
+-- FROM SoldProperties 
+-- WHERE SoldDate >= DATE_SUB(CURDATE(), INTERVAL 30 DAY);
+
+-- SELECT AgentID, COUNT(*) AS PropertiesSold, SUM(SoldPrice) AS TotalSalesValue, AVG(SoldPrice) AS AverageSalePrice 
+-- FROM SoldProperties 
+-- GROUP BY AgentID 
+-- ORDER BY AverageSalePrice DESC;
+
+-- SELECT ROUND(AVG(Price / SquareFeet), 2) AS AveragePricePerSqFt
+-- FROM Properties;
+
+-- SELECT AgentID, COUNT(*) AS TotalSales 
+-- FROM SoldProperties 
+-- GROUP BY AgentID WITH ROLLUP;
+
+-- SELECT sp.PropertyID, sp.SoldPrice, sp.SoldDate, u.Name AS AgentName, buyer.Name AS BuyerName 
+-- FROM SoldProperties sp
+-- JOIN Users u ON sp.AgentID = u.UserID
+-- JOIN Users buyer ON sp.BuyerID = buyer.UserID
+-- WHERE sp.SoldDate >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH);
+
+-- SELECT AgentID, AVG(daysOnMarket) AS AverageDaysOnMarket
+-- FROM UnsoldProperties
+-- GROUP BY AgentID
+-- ORDER BY AverageDaysOnMarket DESC
+-- LIMIT 1;
+
+-- SELECT AgentID, COUNT(*) AS PropertiesSold, SUM(SoldPrice) AS TotalSalesValue, AVG(SoldPrice) AS AverageSalePrice 
+-- FROM SoldProperties 
+-- GROUP BY AgentID 
+-- ORDER BY AverageSalePrice DESC;
+
+
+
 
 
