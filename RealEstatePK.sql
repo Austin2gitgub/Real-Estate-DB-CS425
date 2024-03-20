@@ -818,5 +818,57 @@ DELIMITER ;
 
 
 
+-- SELECT City, State, ROUND(AVG(SoldPrice),2) AS AvgSellingPrice
+-- FROM SoldProperties sp
+-- JOIN Properties p ON sp.PropertyID = p.PropertyID
+-- GROUP BY City, State;
 
+-- SELECT AgentID, SUM(SoldPrice) AS TotalSalesValue,
+--        RANK() OVER(ORDER BY SUM(SoldPrice) DESC) AS SalesRank
+-- FROM SoldProperties
+-- GROUP BY AgentID;
+
+-- SELECT SoldDate, COUNT(*) AS PropertiesSold,
+--        SUM(COUNT(*)) OVER(ORDER BY SoldDate) AS RunningTotal
+-- FROM SoldProperties
+-- GROUP BY SoldDate;
+
+-- SELECT City, State, SquareFeet, Price,
+--        AVG(Price/SquareFeet) OVER(PARTITION BY City) AS AvgPricePerSqFt
+-- FROM Properties;
+
+-- SELECT AgentID, SUM(SoldPrice) AS TotalSalesValue,
+--        RANK() OVER(ORDER BY SUM(SoldPrice) DESC) AS SalesRank,
+--        SUM(SUM(SoldPrice)) OVER(ORDER BY AgentID) AS RunningTotalSales
+-- FROM SoldProperties
+-- GROUP BY AgentID;
+
+-- SELECT SoldDate, COUNT(*) AS PropertiesSold,
+--        SUM(COUNT(*)) OVER(ORDER BY SoldDate) AS CumulativePropertiesSold,
+--        COUNT(*) * 100.0 / SUM(COUNT(*)) OVER() AS PercentageSold
+-- FROM SoldProperties
+-- GROUP BY SoldDate;
+
+-- SELECT p.PropertyID, p.Address, p.City, p.State, up.daysOnMarket
+-- FROM UnsoldProperties up
+-- JOIN Properties p ON up.PropertyID = p.PropertyID;
+
+-- SELECT * FROM properties
+
+-- SELECT a.AgentID, a.Agent_Name, COUNT(sp.PropertyID) AS PropertiesSold
+-- FROM Agents a
+-- JOIN SoldProperties sp ON a.AgentID = sp.AgentID
+-- GROUP BY a.AgentID, a.Agent_Name
+-- ORDER BY PropertiesSold DESC;
+
+-- SELECT a.AgentID, a.Agent_Name, SUM(sp.SoldPrice) AS TotalRevenue
+-- FROM Agents a
+-- JOIN SoldProperties sp ON a.AgentID = sp.AgentID
+-- WHERE YEAR(sp.SoldDate) = 2023
+-- GROUP BY a.AgentID, a.Agent_Name;
+
+-- SELECT a.AgentID, a.Agent_Name, SUM(sp.SoldPrice) AS TotalSalesValue
+-- FROM Agents a
+-- JOIN SoldProperties sp ON a.AgentID = sp.AgentID
+-- GROUP BY a.AgentID, a.Agent_Name;
 
