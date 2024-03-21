@@ -872,3 +872,16 @@ DELIMITER ;
 -- JOIN SoldProperties sp ON a.AgentID = sp.AgentID
 -- GROUP BY a.AgentID, a.Agent_Name;
 
+-- SELECT AgentID, Agent_Name, COUNT(*) AS PropertiesSold, SUM(SoldPrice) AS TotalSalesValue, AVG(SoldPrice) AS AverageSalePrice 
+-- FROM SoldProperties 
+-- GROUP BY AgentID 
+-- ORDER BY AverageSalePrice DESC;
+
+-- SELECT a.Agent_Name, COUNT(*) AS PropertiesSold,SUM(sp.SoldPrice) AS TotalSalesValue, ROUND(AVG(SoldPrice),2) AS AverageSalePrice 
+-- FROM SoldProperties sp
+-- JOIN Agents a ON sp.AgentID = a.AgentID
+-- GROUP BY a.Agent_Name, a.AgentID
+-- ORDER BY TotalSalesValue DESC;
+
+
+
