@@ -3,7 +3,7 @@ import mysql.connector
 from decimal import *
 
 # Declaring variables to use
-connector = mysql.connector.connect(host="localhost", user="root", password="ROOFacademy1!", database="RealEstate_Final")
+connector = mysql.connector.connect(host="localhost", user="root", password="", database="RealEstate_Final")
 run = True
 if connector:
     print("Connected\n")
