@@ -13,7 +13,7 @@ else: print("Connection error")
 
 def getDataTables():
     res = connector.cursor()
-    sqlCommand = "SELECT DISTINCT object_name FROM sys.schema_tables_with_full_table_scans"
+    sqlCommand = "SELECT DISTINCT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME IN ('users', 'agents', 'properties')"
     res.execute(sqlCommand)
     output = res.fetchall()
     print(tabulate(output, headers= [ "Table Names\n "]))
