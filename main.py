@@ -3,7 +3,7 @@ import mysql.connector
 from decimal import *
 
 # Declaring variables to use
-connector = mysql.connector.connect(host="localhost", user="root", password="", database="RealEstate_Final_Final")
+connector = mysql.connector.connect(host="localhost", user="root", password="ROOFacademy1!", database="RealEstate_Final_Final")
 run = True
 if connector:
     print("Connected\n")
@@ -33,13 +33,12 @@ def checkForAgent(AgentID):
         return False
 
 
-def createPropertiesData(PropertyID, AgentID, Status, Address,  ZipCode,City, State, SquareFeet, Price, Type,LotSize,Beds,Baths):
+def createPropertiesData( AgentID, Status, Address,  ZipCode,City, State, SquareFeet, Price, Type,LotSize,Beds,Baths):
     res = connector.cursor()
 
     if checkForAgent(AgentID):
-        insert_query = "INSERT INTO Properties (PropertyID, AgentID, Status, Address,  ZipCode,City, State, SquareFeet, Price, Type,LotSize,Beds,Baths) VALUES (%(PropertyID)s, %(AgentID)s, %(Status)s, %(Address)s, %(ZipCode)s, %(City)s, %(State)s, %(SquareFeet)s, %(Price)s, %(Type)s, %(LotSize)s, %(Beds)s, %(Baths)s)"
+        insert_query = "INSERT INTO Properties ( AgentID, Status, Address,  ZipCode,City, State, SquareFeet, Price, Type,LotSize,Beds,Baths) VALUES ( %(AgentID)s, %(Status)s, %(Address)s, %(ZipCode)s, %(City)s, %(State)s, %(SquareFeet)s, %(Price)s, %(Type)s, %(LotSize)s, %(Beds)s, %(Baths)s)"
         new_property = {
-            "PropertyID": PropertyID,
             "AgentID": AgentID,
             "Status": Status,
             "Address": Address,
@@ -62,11 +61,16 @@ def createPropertiesData(PropertyID, AgentID, Status, Address,  ZipCode,City, St
 
 def updatePropertiesData(PropertyID, AgentID, Status, Address,  ZipCode,City, State, SquareFeet, Price, Type,LotSize,Beds,Baths):
     res = connector.cursor()
-    update_query = "UPDATE Properties SET AgentID=%s, Status=%s, Address=%s, ZipCode=%s, City=%s, State=%s, SquareFeet=%s, Price=%s, Type=%s, LotSize=%s, Beds=%s, Baths=%s WHERE PropertyID=%s"
-    new_property = (AgentID, Status, Address, ZipCode, City, State, SquareFeet, Price, Type, LotSize, Beds, Baths, PropertyID)
-    res.execute(update_query, new_property)
-    connector.commit()
-    print("Updated successfully!")
+    if checkForAgent(AgentID):
+        update_query = "UPDATE Properties SET AgentID=%s, Status=%s, Address=%s, ZipCode=%s, City=%s, State=%s, SquareFeet=%s, Price=%s, Type=%s, LotSize=%s, Beds=%s, Baths=%s WHERE PropertyID=%s"
+        new_property = (
+        AgentID, Status, Address, ZipCode, City, State, SquareFeet, Price, Type, LotSize, Beds, Baths, PropertyID)
+        res.execute(update_query, new_property)
+        connector.commit()
+        print("Updated successfully!")
+    else:
+        print("Agent not found!")
+
 
 def outputPropertiesData():
     res = connector.cursor()
@@ -85,41 +89,17 @@ def deletePropertiesData(PropertyID):
 #---------------------------------------------------------
 
 # USERS ONLY
-
-def getRecentUserID():
-    res = connector.cursor()
-    getUserIdQuery = "SELECT Users.UserID FROM Users ORDER BY UserID DESC"
-    res.execute(getUserIdQuery)
-    result = res.fetchone()[0] + 1
-    return result
-
-def getRecentAgentID():
-    res = connector.cursor()
-    getRecentIDQuery = "SELECT AgentID FROM Agents ORDER BY AgentID DESC"
-    res.execute(getRecentIDQuery)
-    nextAgentId = res.fetchone()[0] + 1
-    print(nextAgentId)
-    return nextAgentId
 def createUsersData(Name, Email, MobileNumber, BuyerSellerAgent, Address):
     res = connector.cursor()
-    UserID = getRecentUserID()
     new_property = {
-        "UserID": UserID,
         "Name": Name,
         "Email": Email,
         "MobileNumber": MobileNumber,
         "BuyerSellerAgent": BuyerSellerAgent,
         "Address": Address
     }
-    create_query= "INSERT INTO Users (UserID, Name, Email, MobileNumber, BuyerSellerAgent, Address) VALUES (%(UserID)s, %(Name)s, %(Email)s, %(MobileNumber)s, %(BuyerSellerAgent)s, %(Address)s) "
-    print(BuyerSellerAgent)
-
-    if BuyerSellerAgent == "agent":
-        nextAgentID = getRecentAgentID()
-        createAgentData(nextAgentID, UserID, None, None, None, None)
+    create_query= "INSERT INTO Users (Name, Email, MobileNumber, BuyerSellerAgent, Address) VALUES (%(Name)s, %(Email)s, %(MobileNumber)s, %(BuyerSellerAgent)s, %(Address)s) "
     res.execute(create_query, new_property)
-
-
     connector.commit()
     print("Inserted successfully!")
 def updateUserData(UserID, Name, Email, MobileNumber, BuyerSellerAgent, Address):
@@ -178,34 +158,32 @@ def checkForUserIsAgent(user_id):
     except mysql.connector.Error as err:
         return False
 
-def createAgentData(AgentID, UserID, AgentCompany, Experience, Location, Languages):
 
-
+def getUserIDBasedOnName(AgentName):
     res = connector.cursor()
+    getIDquery= "SELECT Users.UserID FROM Users WHERE Name = %s"
+    res.execute(getIDquery, (AgentName,))
+    return res.fetchone()[0]
 
+def createAgentData(AgentCompany, Agent_Name, Experience, Location, Languages):
 
-    if checkForUser(UserID):
+    createUsersData(Agent_Name, None, None, 'Agent', None)
+    userID = getUserIDBasedOnName(Agent_Name)
+    res = connector.cursor()
+    new_properties = {
+        "UserID": userID,
+        "AgentCompany": AgentCompany,
+        "Agent_Name": Agent_Name,
+        "Experience": Experience,
+        "Location": Location,
+        "Languages": Languages
+    }
 
+    create_query = "INSERT INTO Agents (  UserID, AgentCompany, Agent_Name, Experience, Location, Languages) VALUES (%(UserID)s, %(AgentCompany)s, %(Agent_Name)s, %(Experience)s, %(Location)s, %(Languages)s)"
+    res.execute(create_query, new_properties)
+    connector.commit()
+    print("Insert successfully!")
 
-        getNameQuery = "SELECT Name FROM Users WHERE UserID = %s"
-        res.execute(getNameQuery, (UserID,))
-        agent_name = res.fetchone()[0]
-
-        new_properties = {
-            "AgentID": AgentID,
-            "UserID": UserID,
-            "AgentCompany": AgentCompany,
-            "Agent_Name": agent_name,
-            "Experience": Experience,
-            "Location": Location,
-            "Languages": Languages
-        }
-        create_query = "INSERT INTO Agents (AgentID, UserID, AgentCompany, Agent_Name, Experience, Location, Languages) VALUES (%(AgentID)s, %(UserID)s, %(AgentCompany)s, %(Agent_Name)s, %(Experience)s, %(Location)s, %(Languages)s)"
-        res.execute(create_query, new_properties)
-        connector.commit()
-        print("Insert successfully!")
-    else:
-        print("User does not exists or they are not Agents")
 def updateAgentData(AgentID, AgentCompany, Experience, Location, Languages):
     res = connector.cursor()
     getUserIdQuery = "SELECT UserID FROM Agents WHERE AgentID = %s"
@@ -277,7 +255,6 @@ while run:
             # Adding data to properties table
             if datatable == "properties":
                 if choice == 1:
-                    propertyID = int(input("Provide PropertyID: "))
                     property_agentID = int(input("Provide AgentID: "))
                     # checkForAgent(property_agentID)
                     status = input("Provide status:old/Unsold/Rent: ")
@@ -291,7 +268,7 @@ while run:
                     lotSize = float(input("Provide lot size of the property: "))
                     beds = int(input("Provide number of beds: "))
                     baths = int(input("Provide number of baths: "))
-                    createPropertiesData(propertyID, property_agentID, status, adress, zipCode, city, state,
+                    createPropertiesData( property_agentID, status, adress, zipCode, city, state,
                                          square_feet,
                                          price,
                                          type, lotSize, beds, baths)
@@ -347,13 +324,12 @@ while run:
                     break
             if datatable == "agents":
                 if choice == 1:
-                    agentID = int(input("Provide AgentID to add: "))
-                    userID = int(input("Provide UserID to add: "))
                     agentCompany = input("Provide company to add: ")
+                    agentName = input("Provide Agent Name: ")
                     experience = int(input("Provide agent's experience: "))
                     location = input("Provide location: ")
                     languages = input("Provide languages: ")
-                    createAgentData(agentID, userID, agentCompany, experience, location, languages)
+                    createAgentData( agentCompany, agentName, experience, location, languages)
                 elif choice == 2:
                     agentID = int(input("Provide AgentID to update:  "))
                     agentCompany = input("Provide company to update: ")
