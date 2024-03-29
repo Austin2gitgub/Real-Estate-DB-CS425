@@ -3,7 +3,7 @@ import mysql.connector
 from decimal import *
 
 # Declaring variables to use
-connector = mysql.connector.connect(host="localhost", user="root", password="", database="RealEstate_Final")
+connector = mysql.connector.connect(host="localhost", user="root", password="", database="RealEstate_Final_Final")
 run = True
 if connector:
     print("Connected\n")
@@ -31,10 +31,6 @@ def checkForAgent(AgentID):
         return agent_exists
     except mysql.connector.Error as err:
         return False
-
-
-
-
 
 
 def createPropertiesData(PropertyID, AgentID, Status, Address,  ZipCode,City, State, SquareFeet, Price, Type,LotSize,Beds,Baths):
@@ -89,8 +85,24 @@ def deletePropertiesData(PropertyID):
 #---------------------------------------------------------
 
 # USERS ONLY
-def createUsersData(UserID, Name, Email, MobileNumber, BuyerSellerAgent, Address):
+
+def getRecentUserID():
     res = connector.cursor()
+    getUserIdQuery = "SELECT Users.UserID FROM Users ORDER BY UserID DESC"
+    res.execute(getUserIdQuery)
+    result = res.fetchone()[0] + 1
+    return result
+
+def getRecentAgentID():
+    res = connector.cursor()
+    getRecentIDQuery = "SELECT AgentID FROM Agents ORDER BY AgentID DESC"
+    res.execute(getRecentIDQuery)
+    nextAgentId = res.fetchone()[0] + 1
+    print(nextAgentId)
+    return nextAgentId
+def createUsersData(Name, Email, MobileNumber, BuyerSellerAgent, Address):
+    res = connector.cursor()
+    UserID = getRecentUserID()
     new_property = {
         "UserID": UserID,
         "Name": Name,
@@ -100,8 +112,14 @@ def createUsersData(UserID, Name, Email, MobileNumber, BuyerSellerAgent, Address
         "Address": Address
     }
     create_query= "INSERT INTO Users (UserID, Name, Email, MobileNumber, BuyerSellerAgent, Address) VALUES (%(UserID)s, %(Name)s, %(Email)s, %(MobileNumber)s, %(BuyerSellerAgent)s, %(Address)s) "
+    print(BuyerSellerAgent)
 
+    if BuyerSellerAgent == "agent":
+        nextAgentID = getRecentAgentID()
+        createAgentData(nextAgentID, UserID, None, None, None, None)
     res.execute(create_query, new_property)
+
+
     connector.commit()
     print("Inserted successfully!")
 def updateUserData(UserID, Name, Email, MobileNumber, BuyerSellerAgent, Address):
@@ -113,6 +131,14 @@ def updateUserData(UserID, Name, Email, MobileNumber, BuyerSellerAgent, Address)
     print("Updated successfully!")
 def deleteUserData(UserID):
     res = connector.cursor()
+    if checkForUser(UserID):
+        if checkForUserIsAgent(UserID):
+            getAgentIDQuery = "SELECT AgentID FROM Agents WHERE UserID = %s"
+            props = (UserID,)
+            res.execute(getAgentIDQuery, props)
+            agentID = res.fetchone()[0]
+            deleteAgentData(agentID)
+
     delete_query = "DELETE FROM Users WHERE UserID=%s "
     new_property = (UserID, ) # Don't forget comma here, if it is not there, code won't work
     res.execute(delete_query, new_property)
@@ -140,6 +166,18 @@ def checkForUser(user_id):
     except mysql.connector.Error as err:
         return False
 
+def checkForUserIsAgent(user_id):
+    try:
+        res = connector.cursor()
+        query = "SELECT COUNT(*) FROM Agents WHERE UserID = %s NOT IN (  SELECT UserID = %s FROM Users);"
+        res.execute(query, (user_id))
+        print(res.fetchone())
+        result = res.fetchone()
+        userIsAgent = result[0] > 0
+        return userIsAgent
+    except mysql.connector.Error as err:
+        return False
+
 def createAgentData(AgentID, UserID, AgentCompany, Experience, Location, Languages):
 
 
@@ -147,6 +185,8 @@ def createAgentData(AgentID, UserID, AgentCompany, Experience, Location, Languag
 
 
     if checkForUser(UserID):
+
+
         getNameQuery = "SELECT Name FROM Users WHERE UserID = %s"
         res.execute(getNameQuery, (UserID,))
         agent_name = res.fetchone()[0]
@@ -165,7 +205,7 @@ def createAgentData(AgentID, UserID, AgentCompany, Experience, Location, Languag
         connector.commit()
         print("Insert successfully!")
     else:
-        print("User does not exists")
+        print("User does not exists or they are not Agents")
 def updateAgentData(AgentID, AgentCompany, Experience, Location, Languages):
     res = connector.cursor()
     getUserIdQuery = "SELECT UserID FROM Agents WHERE AgentID = %s"
@@ -181,11 +221,30 @@ def updateAgentData(AgentID, AgentCompany, Experience, Location, Languages):
 
 def deleteAgentData(AgentID):
     res = connector.cursor()
+    def checkForProperties(AgentID):
+        try:
+            checkQuery = "SELECT COUNT(*) FROM Properties WHERE AgentID = %s"
+            props = (AgentID,)
+            res.execute(checkQuery, props)
+            result = res.fetchone()
+            property_exists = result[0] > 0
+            return property_exists
+        except mysql.connector.Error as err:
+            return False
+    if checkForProperties(AgentID):
+        update_property = "UPDATE Properties SET AgentID = null WHERE AgentID = %s"
+        props = (AgentID,)
+        res.execute(update_property, props)
+        connector.commit()
+        print("Deleting Agent from property...")
+
     deleteUserQuery = "DELETE FROM Agents WHERE AgentID = %s"
     props = (AgentID,)
     res.execute(deleteUserQuery, props)
     connector.commit()
     print("Deleted successfully!")
+
+
 def printAgentData():
     res = connector.cursor()
     outputQuery = "SELECT * FROM Agents"
@@ -200,7 +259,7 @@ while run:
 
     if datatable != "properties" and datatable != "users" and datatable != "agents":
         print("Could not find Data Table.")
-        break
+        break # remove if want to keep loop
     else:
         while True:
             print("-"*15)
@@ -215,106 +274,100 @@ while run:
                 print("Invalid Input\n")
                 break
 
-            try:
-                # Adding data to properties table
-                if datatable == "properties":
-
-                    if choice == 1:
-                        propertyID = int(input("Provide PropertyID: "))
-                        property_agentID = int(input("Provide AgentID: "))
-                        # checkForAgent(property_agentID)
-                        status = input("Provide status:old/Unsold/Rent: ")
-                        adress = input("Provide address: ")
-                        zipCode = input("Provide zip code: ")
-                        city = input("Provide City: ")
-                        state = input("Provide state state ( Ex. IL for Illinois ): ")
-                        square_feet = int(input("Provide square feet: "))
-                        price = float(input("Provide the price: "))
-                        type = input("Provide property type: ")
-                        lotSize = float(input("Provide lot size of the property: "))
-                        beds = int(input("Provide number of beds: "))
-                        baths = int(input("Provide number of baths: "))
-                        createPropertiesData(propertyID, property_agentID, status, adress, zipCode, city, state,
-                                             square_feet,
-                                             price,
-                                             type, lotSize, beds, baths)
-                    elif choice == 2:
-                        propertyID = int(input("Provide PropertyID that you want to change: "))
-                        agentID = int(input("Provide AgentID: "))
-                        status = input("Provide status: Sold/Unsold/Rent: ")
-                        adress = input("Provide address: ")
-                        zipCode = input("Provide zip code: ")
-                        city = input("Provide City: ")
-                        state = input("Provide state state ( Ex. IL for Illinois ): ")
-                        square_feet = int(input("Provide square feet: "))
-                        price = float(input("Provide the price: "))
-                        type = input("Provide property type: ")
-                        lotSize = float(input("Provide lot size of the property: "))
-                        beds = int(input("Provide number of beds: "))
-                        baths = int(input("Provide number of baths: "))
-                        updatePropertiesData(propertyID, agentID, status, adress, zipCode, city, state, square_feet,
-                                             price,
-                                             type, lotSize, beds, baths)
-                    elif choice == 3:
-                        propertyID = int(input("Provide PropertyID that you want to delete: "))
-                        deletePropertiesData(propertyID)
-                    elif choice == 4:
-                        outputPropertiesData()
-                    elif choice == 5:
-                        break;
-                    else:
-                        print("Invalid input")
-                        break;
-                if datatable == "users":
-                    if choice == 1:
-                        userID = int(input("Provide UserID to add: "))
-                        name = input("Provide Name to add: ")
-                        email = input("Provide Email to add: ")
-                        mobileNumber = input("Provide mobile number to add: ")
-                        buyerSellerAgent = input("Is it buyer, seller or agent? ")
-                        user_address = input("Provide Address to add: ")
-                        createUsersData(userID, name, email, mobileNumber, buyerSellerAgent, user_address)
-                    elif choice == 2:
-                        userID = int(input("Provide UserID to update: "))
-                        name = input("Provide Name ")
-                        email = input("Provide Email ")
-                        mobileNumber = input("Provide mobile number ")
-                        buyerSellerAgent = input("Is it buyer, seller or agent? ")
-                        user_address = input("Provide Address ")
-                        updateUserData(userID, name, email, mobileNumber, buyerSellerAgent, user_address)
-                    elif choice == 3:
-                        userID = int(input("Provide UserID to delete: "))
-                        deleteUserData(userID)
-                    elif choice == 4:
-                        printUserData()
-                    elif choice == 5:
-                        break
-                if datatable == "agents":
-                    if choice == 1:
-                        agentID = int(input("Provide AgentID to add: "))
-                        userID = int(input("Provide UserID to add: "))
-                        agentCompany = input("Provide company to add: ")
-                        experience = int(input("Provide agent's experience: "))
-                        location = input("Provide location: ")
-                        languages = input("Provide languages: ")
-
-                        createAgentData(agentID, userID, agentCompany, experience, location, languages)
-                    elif choice == 2:
-                        agentID = int(input("Provide AgentID to update:  "))
-                        agentCompany = input("Provide company to update: ")
-                        experience = int(input("Provide agent's experience: "))
-                        location = input("Provide location: ")
-                        languages = input("Provide languages: ")
-                        updateAgentData(agentID, agentCompany, experience, location, languages)
-                    elif choice == 3:
-                        agentID = int(input("Provide AgentID to delete: "))
-                        deleteAgentData(agentID)
-                    elif choice == 4:
-                        printAgentData()
-                    elif choice == 5:
-                        break
-            except:
-                print("Invalid Input")
+            # Adding data to properties table
+            if datatable == "properties":
+                if choice == 1:
+                    propertyID = int(input("Provide PropertyID: "))
+                    property_agentID = int(input("Provide AgentID: "))
+                    # checkForAgent(property_agentID)
+                    status = input("Provide status:old/Unsold/Rent: ")
+                    adress = input("Provide address: ")
+                    zipCode = input("Provide zip code: ")
+                    city = input("Provide City: ")
+                    state = input("Provide state state ( Ex. IL for Illinois ): ")
+                    square_feet = int(input("Provide square feet: "))
+                    price = float(input("Provide the price: "))
+                    type = input("Provide property type: ")
+                    lotSize = float(input("Provide lot size of the property: "))
+                    beds = int(input("Provide number of beds: "))
+                    baths = int(input("Provide number of baths: "))
+                    createPropertiesData(propertyID, property_agentID, status, adress, zipCode, city, state,
+                                         square_feet,
+                                         price,
+                                         type, lotSize, beds, baths)
+                elif choice == 2:
+                    propertyID = int(input("Provide PropertyID that you want to change: "))
+                    agentID = int(input("Provide AgentID: "))
+                    status = input("Provide status: Sold/Unsold/Rent: ")
+                    adress = input("Provide address: ")
+                    zipCode = input("Provide zip code: ")
+                    city = input("Provide City: ")
+                    state = input("Provide state state ( Ex. IL for Illinois ): ")
+                    square_feet = int(input("Provide square feet: "))
+                    price = float(input("Provide the price: "))
+                    type = input("Provide property type: ")
+                    lotSize = float(input("Provide lot size of the property: "))
+                    beds = int(input("Provide number of beds: "))
+                    baths = int(input("Provide number of baths: "))
+                    updatePropertiesData(propertyID, agentID, status, adress, zipCode, city, state, square_feet,
+                                         price,
+                                         type, lotSize, beds, baths)
+                elif choice == 3:
+                    propertyID = int(input("Provide PropertyID that you want to delete: "))
+                    deletePropertiesData(propertyID)
+                elif choice == 4:
+                    outputPropertiesData()
+                elif choice == 5:
+                    break;
+                else:
+                    print("Invalid input")
+                    break;
+            if datatable == "users":
+                if choice == 1:
+                    name = input("Provide Name to add: ")
+                    email = input("Provide Email to add: ")
+                    mobileNumber = input("Provide mobile number to add: ")
+                    buyerSellerAgent = input("Is it buyer, seller or agent? ")
+                    user_address = input("Provide Address to add: ")
+                    createUsersData(name, email, mobileNumber, buyerSellerAgent, user_address)
+                elif choice == 2:
+                    userID = int(input("Provide UserID to update: "))
+                    name = input("Provide Name ")
+                    email = input("Provide Email ")
+                    mobileNumber = input("Provide mobile number ")
+                    buyerSellerAgent = input("Is it buyer, seller or agent? ")
+                    user_address = input("Provide Address ")
+                    updateUserData(userID, name, email, mobileNumber, buyerSellerAgent, user_address)
+                elif choice == 3:
+                    userID = int(input("Provide UserID to delete: "))
+                    deleteUserData(userID)
+                elif choice == 4:
+                    printUserData()
+                elif choice == 5:
+                    break
+            if datatable == "agents":
+                if choice == 1:
+                    agentID = int(input("Provide AgentID to add: "))
+                    userID = int(input("Provide UserID to add: "))
+                    agentCompany = input("Provide company to add: ")
+                    experience = int(input("Provide agent's experience: "))
+                    location = input("Provide location: ")
+                    languages = input("Provide languages: ")
+                    createAgentData(agentID, userID, agentCompany, experience, location, languages)
+                elif choice == 2:
+                    agentID = int(input("Provide AgentID to update:  "))
+                    agentCompany = input("Provide company to update: ")
+                    experience = int(input("Provide agent's experience: "))
+                    location = input("Provide location: ")
+                    languages = input("Provide languages: ")
+                    updateAgentData(agentID, agentCompany, experience, location, languages)
+                elif choice == 3:
+                    agentID = int(input("Provide AgentID to delete: "))
+                    deleteAgentData(agentID)
+                elif choice == 4:
+                    printAgentData()
+                elif choice == 5:
+                    break
 
 
 
