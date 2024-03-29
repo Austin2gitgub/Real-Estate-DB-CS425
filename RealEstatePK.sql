@@ -1,9 +1,9 @@
-create database RealEstate_Final;
-use RealEstate_Final;
+create database RealEstate_Final_Final;
+use RealEstate_Final_Final;
 
 -- -- Creating User table
 CREATE TABLE Users (
-    UserID INT PRIMARY KEY,
+    UserID INT PRIMARY KEY auto_increment,
     Name VARCHAR(255),
     email VARCHAR(255),
     mobileNumber VARCHAR(20),
@@ -11,9 +11,11 @@ CREATE TABLE Users (
     Address VARCHAR(255)
 );
 
+
+
 -- -- Creating Agent table
 CREATE TABLE Agents (
-    AgentID INT primary key,
+    AgentID INT primary key auto_increment,
     UserID INT,
     AgentCompany VARCHAR(255),
     -- propertyID INT,
@@ -29,7 +31,7 @@ CREATE TABLE Agents (
 
 -- -- Creating Properties table
 CREATE TABLE Properties (
-    PropertyID INT PRIMARY KEY,
+    PropertyID INT PRIMARY KEY auto_increment,
     AgentID INT,
     Status ENUM('sold', 'unsold', 'Rent'),
     Address VARCHAR(255),
@@ -50,7 +52,7 @@ CREATE TABLE Properties (
 
 -- -- Creating SoldProperties table
 CREATE TABLE SoldProperties (
-    Sold_SNumber INT PRIMARY KEY,
+    Sold_SNumber INT PRIMARY KEY auto_increment,
     PropertyID INT,
     SoldPrice DECIMAL(10, 2),
     SoldDate DATE,
@@ -66,7 +68,7 @@ CREATE TABLE SoldProperties (
 -- -- Creating UnsoldProperties table
 -- -- drop table unsoldproperties;
 CREATE TABLE UnsoldProperties (
-    Unsold_SNumber INT PRIMARY KEY,
+    Unsold_SNumber INT PRIMARY KEY auto_increment,
     PropertyID INT,
     Price DECIMAL(10, 2),
     SellerID INT,
@@ -81,7 +83,7 @@ CREATE TABLE UnsoldProperties (
 -- -- Creating RentProperties table
 -- -- drop table rentproperties;
 CREATE TABLE RentProperties (
-    Rent_SNumber INT PRIMARY KEY,
+    Rent_SNumber INT PRIMARY KEY auto_increment,
     PropertyID INT,
     RentPrice DECIMAL(10, 2),
     Location VARCHAR(255),
@@ -344,9 +346,6 @@ VALUES
 
 
 
-
-
-use RealEstate_Final;
 
 
 -- Views
@@ -882,6 +881,3 @@ DELIMITER ;
 -- JOIN Agents a ON sp.AgentID = a.AgentID
 -- GROUP BY a.Agent_Name, a.AgentID
 -- ORDER BY TotalSalesValue DESC;
-
-
-
