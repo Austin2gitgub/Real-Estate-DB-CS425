@@ -3,7 +3,7 @@ import mysql.connector
 from decimal import *
 
 # Declaring variables to use
-connector = mysql.connector.connect(host="localhost", user="root", password="", database="RealEstate_Final_Final")
+connector = mysql.connector.connect(host="localhost", user="root", password="ROOFacademy1!", database="RealEstate_Final_Final")
 run = True
 if connector:
     print("Connected\n")
@@ -117,7 +117,7 @@ def deleteUserData(UserID):
             props = (UserID,)
             res.execute(getAgentIDQuery, props)
             agentID = res.fetchone()[0]
-            deleteAgentData(agentID)
+            updateAgentData(agentID, None, None, None, None)
 
     delete_query = "DELETE FROM Users WHERE UserID=%s "
     new_property = (UserID, ) # Don't forget comma here, if it is not there, code won't work
@@ -237,7 +237,7 @@ while run:
 
     if datatable != "properties" and datatable != "users" and datatable != "agents":
         print("Could not find Data Table.")
-        break # remove if want to keep loop
+        # break # remove if want to keep loop
     else:
         while True:
             print("-"*15)

@@ -23,13 +23,11 @@ CREATE TABLE Agents (
     Experience INT,
     Location VARCHAR(255),
     Languages VARCHAR(255),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) on delete cascade;
     -- Assuming propertyID is a reference to a specific property managed by the agent. 
     -- This design might be reconsidered based on real-world requirements.
     -- FOREIGN KEY (propertyID) REFERENCES Properties(PropertyID)
 );
-
-DELETE TABLE Agent;
 
 -- -- Creating Properties table
 CREATE TABLE Properties (
