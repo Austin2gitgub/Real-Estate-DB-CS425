@@ -416,3 +416,256 @@ def output_agent_data():
 
     resize_button = tk.Button(root, text="Fix", command=resize_text_box)
     resize_button.pack()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def printPropertyData():
+    res = connector.cursor()
+    print_query = "SELECT * FROM Properties"
+    res.execute(print_query)
+    output = res.fetchall()
+    text = tabulate(output, headers=["PropertyID", "AgentID", "Status", "Address", "ZipCode", "City",  "State", "SquareFeet", "Price", "Type", "LotSize", "Beds", "Baths"])
+    return text
+
+# GENERAL FUNCTIONS
+def success_message(): # Check in future
+        messagebox.showinfo("Success", "Operation successful!")
+def create_property_data(): # Creating property data frame
+    EditDataFrame.destroy()
+    CreatepropertyFrame = tk.Frame(root)
+    CreatepropertyFrame.pack()
+
+    # label = tk.Label(CreateUserFrame, text="Provide AgentID to add : ", font=("Helvetica", 12, "bold"))
+    # label.pack( )
+    #
+    # input_box = tk.Entry(CreateUserFrame, font=("Helvetica", 12, "bold"))
+    # # input_box.grid(row = 0, column= 2)
+    # input_box.pack()
+    #
+    # label = tk.Label(CreateUserFrame, text="Provide UserID to add : ", font=("Helvetica", 12, "bold"))
+    # label.pack(  )
+    #
+    # input_box = tk.Entry(CreateUserFrame, font=("Helvetica", 12, "bold"))
+    # input_box.pack()
+
+    label = tk.Label(CreatepropertyFrame, text="Provide Agent ID to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+
+
+    label = tk.Label(CreatepropertyFrame, text="Provide Status to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreatepropertyFrame, text="Provide Address to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreatepropertyFrame, text="Provide ZipCode to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreatepropertyFrame, text="Provide City to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreatepropertyFrame, text="Provide Sate to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreatepropertyFrame, text="Provide SquareFeet to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreatepropertyFrame, text="Provide Price to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreatepropertyFrame, text="Provide Type to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreatepropertyFrame, text="Provide LotSize to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreatepropertyFrame, text="Provide Beds to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreatepropertyFrame, text="Provide Baths to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreatepropertyFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+
+    button = tk.Button(CreatepropertyFrame, font=("Helvetica", 14, "bold"), text="Add", command=success_message )
+    button.pack()
+def update_property_data():
+  EditDataFrame.destroy()
+
+  UpdatePropertyFrame = tk.Frame(root, padx=10, pady=10)
+  UpdatePropertyFrame.pack()
+
+  label_property_id = tk.Label(UpdatePropertyFrame, text="PropertyID:", font=("Helvetica", 12))
+  label_property_id.grid(row=0, column=0, sticky="W")  # Left-align label
+
+  label_agent_id = tk.Label(UpdatePropertyFrame, text="AgentID:", font=("Helvetica", 12))
+  label_agent_id.grid(row=1, column=0, sticky="W")
+
+  label_status = tk.Label(UpdatePropertyFrame, text="Status:", font=("Helvetica", 12))
+  label_status.grid(row=2, column=0, sticky="W")
+
+  label_address = tk.Label(UpdatePropertyFrame, text="Address:", font=("Helvetica", 12))
+  label_address.grid(row=3, column=0, sticky="W")
+
+  label_zip_code = tk.Label(UpdatePropertyFrame, text="ZipCode:", font=("Helvetica", 12))
+  label_zip_code.grid(row=5, column=0, sticky="W")
+
+  label_city = tk.Label(UpdatePropertyFrame, text="City:", font=("Helvetica", 12))
+  label_city.grid(row=3, column=0, sticky="W")
+
+  label_state = tk.Label(UpdatePropertyFrame, text="State:", font=("Helvetica", 12))
+  label_state.grid(row=5, column=0, sticky="W")
+
+  label_square_Feet = tk.Label(UpdatePropertyFrame, text="Square Feet:", font=("Helvetica", 12))
+  label_square_Feet.grid(row=3, column=0, sticky="W")
+
+  label_property_type = tk.Label(UpdatePropertyFrame, text="Property Type:", font=("Helvetica", 12))
+  label_property_type.grid(row=5, column=0, sticky="W")
+
+  label_lot_size = tk.Label(UpdatePropertyFrame, text="Lot Size:", font=("Helvetica", 12))
+  label_lot_size.grid(row=3, column=0, sticky="W")
+
+  label_beds = tk.Label(UpdatePropertyFrame, text="Beds:", font=("Helvetica", 12))
+  label_beds.grid(row=3, column=0, sticky="W")
+
+  label_baths = tk.Label(UpdatePropertyFrame, text="baths:", font=("Helvetica", 12))
+  label_baths.grid(row=5, column=0, sticky="W")
+
+  entry_property_id = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_property_id.grid(row=0, column=1, padx=5, pady=5)
+
+  entry_agent_id = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_agent_id.grid(row=1, column=1, padx=5, pady=5)
+
+  entry_status = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_status.grid(row=2, column=1, padx=5, pady=5)
+
+  entry_address = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_address.grid(row=3, column=1, padx=5, pady=5)
+
+  entry_zipcode = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_zipcode.grid(row=3, column=1, padx=5, pady=5)
+
+  entry_city = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_city.grid(row=3, column=1, padx=5, pady=5)
+
+  entry_state = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_state.grid(row=3, column=1, padx=5, pady=5)
+
+  entry_price = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_price.grid(row=3, column=1, padx=5, pady=5)
+
+  entry_property_type = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_property_type.grid(row=3, column=1, padx=5, pady=5)
+
+  entry_lot_size = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_lot_size.grid(row=3, column=1, padx=5, pady=5)
+
+  entry_beds = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_beds.grid(row=3, column=1, padx=5, pady=5)
+
+  entry_baths = tk.Entry(UpdatePropertyFrame, font=("Helvetica", 12))
+  entry_baths.grid(row=3, column=1, padx=5, pady=5)
+
+  # entry_status = tk.Entry(UpdateAgentFrame, font=("Helvetica", 12))
+  # entry_status.grid(row=4, column=1, padx=5, pady=5)
+
+  button = tk.Button(UpdatePropertyFrame, font=("Helvetica", 12), text="Update", command=success_message)
+  button.grid(row= 6, column= 1, padx=5, pady=5)
+
+
+def delete_property_data():
+    EditDataFrame.destroy()
+    DeletePropertyFrame = tk.Frame(root, padx=10, pady=10)
+
+    DeletePropertyFrame.pack()
+
+    label_property_id = tk.Label(DeletePropertyFrame, text="Delete property by PropertyID", font=("Helvetica", 12, "bold"))
+    label_property_id.grid(row=0, column=1, sticky="W")
+
+    # entry_status = tk.Entry(DeleteAgentFrame, font=("Helvetica", 12))
+    # entry_status.grid(row=1, column=1, padx=5, pady=5)
+
+    button = tk.Button(DeletePropertyFrame, text="Delete", font=("Helvetica", 12), command=success_message)
+    button.grid(row = 2, column=1)
+def output_agent_data():
+    EditDataFrame.destroy()
+
+    OutputFrame = tk.Frame(root, padx=10, pady=10)
+
+    OutputFrame.pack()
+
+    text = tk.Text(OutputFrame, font=("Helvetica", 12))
+    text.insert(tk.END, printPropertyData())
+    text.pack(expand=True)
+
+    def resize_text_box():
+        # Increase width by 20 characters and height by 5 lines
+        text.config(width=text.winfo_width() + 20, height=text.winfo_height() + 5)
+
+    resize_button = tk.Button(root, text="Fix", command=resize_text_box)
+    resize_button.pack()
