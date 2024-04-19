@@ -3,7 +3,11 @@ import mysql.connector
 from decimal import *
 
 # Declaring variables to use
+<<<<<<< Updated upstream
 connector = mysql.connector.connect(host="localhost", user="root", password="", database="RealEstate_Final_Final")
+=======
+connector = mysql.connector.connect(host='localhost', user='root', password='L@lith011004', database='RealEstate_Final')
+>>>>>>> Stashed changes
 run = True
 if connector:
     print("Connected\n")

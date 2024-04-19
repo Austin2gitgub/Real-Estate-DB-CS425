@@ -5,7 +5,7 @@ from decimal import *
 from tkinter import messagebox
 
 # Declaring variables to use
-connector = mysql.connector.connect(host="localhost", user="root", password="ROOFacademy1!", database="RealEstate_Final_Final")
+connector = mysql.connector.connect(host='localhost', user='root', password='', database='RealEstate_Final')
 run = True
 if connector:
     print("Connected\n")
@@ -262,3 +262,157 @@ root.mainloop()
 # # Entry field for user input (replace with actual functionality if needed)
 # entry = tk.Entry(root)
 # entry.pack(pady=10, padx=20)
+
+
+
+
+
+
+
+
+
+
+
+
+
+def printAgentData():
+    res = connector.cursor()
+    print_query = "SELECT * FROM Agents"
+    res.execute(print_query)
+    output = res.fetchall()
+    text = tabulate(output, headers=["AgentID", "UserID","Agent_company" ,"Agent_Name", "Experience", "Location",  "Languages"])
+    return  text
+
+# GENERAL FUNCTIONS
+def success_message(): # Check in future
+        messagebox.showinfo("Success", "Operation successful!")
+def create_user_data(): # Creating user data frame
+    EditDataFrame.destroy()
+    CreateUserFrame = tk.Frame(root)
+    CreateUserFrame.pack()
+
+    # label = tk.Label(CreateUserFrame, text="Provide AgentID to add : ", font=("Helvetica", 12, "bold"))
+    # label.pack( )
+    #
+    # input_box = tk.Entry(CreateUserFrame, font=("Helvetica", 12, "bold"))
+    # # input_box.grid(row = 0, column= 2)
+    # input_box.pack()
+    #
+    # label = tk.Label(CreateUserFrame, text="Provide UserID to add : ", font=("Helvetica", 12, "bold"))
+    # label.pack(  )
+    #
+    # input_box = tk.Entry(CreateUserFrame, font=("Helvetica", 12, "bold"))
+    # input_box.pack()
+
+    label = tk.Label(CreateUserFrame, text="Provide Agent company to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreateUserFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+
+
+    label = tk.Label(CreateUserFrame, text="Provide Agent Name to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreateUserFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreateUserFrame, text="Provide Agent's experience to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreateUserFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreateUserFrame, text="Provide Agent's location to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreateUserFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+    label = tk.Label(CreateUserFrame, text="Provide Agent's languages to add : ", font=("Helvetica", 12, "bold"))
+    label.pack()
+
+    input_box = tk.Entry(CreateUserFrame, font=("Helvetica", 12, "bold"))
+    input_box.pack()
+
+
+    button = tk.Button(CreateUserFrame, font=("Helvetica", 14, "bold"), text="Add", command=success_message )
+    button.pack()
+def update_agent_data():
+  EditDataFrame.destroy()
+
+  UpdateAgentFrame = tk.Frame(root, padx=10, pady=10)
+  UpdateAgentFrame.pack()
+
+  label_agent_id = tk.Label(UpdateAgentFrame, text="AgentID:", font=("Helvetica", 12))
+  label_agent_id.grid(row=0, column=0, sticky="W")  # Left-align label
+
+  label_company = tk.Label(UpdateAgentFrame, text="Company:", font=("Helvetica", 12))
+  label_company.grid(row=1, column=0, sticky="W")
+
+  label_experience = tk.Label(UpdateAgentFrame, text="Experience:", font=("Helvetica", 12))
+  label_experience.grid(row=2, column=0, sticky="W")
+
+  label_location = tk.Label(UpdateAgentFrame, text="Location:", font=("Helvetica", 12))
+  label_location.grid(row=3, column=0, sticky="W")
+
+  label_language = tk.Label(UpdateAgentFrame, text="Language:", font=("Helvetica", 12))
+  label_language.grid(row=5, column=0, sticky="W")
+
+  entry_agent_id = tk.Entry(UpdateAgentFrame, font=("Helvetica", 12))
+  entry_agent_id.grid(row=0, column=1, padx=5, pady=5)
+
+  entry_company = tk.Entry(UpdateAgentFrame, font=("Helvetica", 12))
+  entry_company.grid(row=1, column=1, padx=5, pady=5)
+
+  entry_experience = tk.Entry(UpdateAgentFrame, font=("Helvetica", 12))
+  entry_experience.grid(row=2, column=1, padx=5, pady=5)
+
+  entry_location = tk.Entry(UpdateAgentFrame, font=("Helvetica", 12))
+  entry_location.grid(row=3, column=1, padx=5, pady=5)
+
+  # entry_status = tk.Entry(UpdateAgentFrame, font=("Helvetica", 12))
+  # entry_status.grid(row=4, column=1, padx=5, pady=5)
+
+  text_language = tk.Entry(UpdateAgentFrame, font=("Helvetica", 12))
+  text_language.grid(row=5, column=1, padx=5, pady=5)
+
+  button = tk.Button(UpdateAgentFrame, font=("Helvetica", 12), text="Update", command=success_message)
+  button.grid(row= 6, column= 1, padx=5, pady=5)
+
+
+def delete_agent_data():
+    EditDataFrame.destroy()
+    DeleteAgentFrame = tk.Frame(root, padx=10, pady=10)
+
+    DeleteAgentFrame.pack()
+
+    label_agent_id = tk.Label(DeleteUserFrame, text="Delete agent by AgentID", font=("Helvetica", 12, "bold"))
+    label_agent_id.grid(row=0, column=1, sticky="W")
+
+    label_agent_id = tk.Label(DeleteAgentFrame, text="Agent ID:", font=("Helvetica", 12))
+    label_agent_id.grid(row=1, column=0, sticky="W")
+
+    # entry_status = tk.Entry(DeleteAgentFrame, font=("Helvetica", 12))
+    # entry_status.grid(row=1, column=1, padx=5, pady=5)
+
+    button = tk.Button(DeleteAgentFrame, text="Delete", font=("Helvetica", 12), command=success_message)
+    button.grid(row = 2, column=1)
+def output_user_data():
+    EditDataFrame.destroy()
+
+    OutputFrame = tk.Frame(root, padx=10, pady=10)
+
+    OutputFrame.pack()
+
+    text = tk.Text(OutputFrame ,font=("Helvetica", 12))
+    text.insert(tk.END, printAgentData())
+    text.pack(expand=True)
+
+    def resize_text_box():
+        # Increase width by 20 characters and height by 5 lines
+        text.config(width=text.winfo_width() + 20, height=text.winfo_height() + 5)
+
+    resize_button = tk.Button(root, text="Fix", command=resize_text_box)
+    resize_button.pack()
