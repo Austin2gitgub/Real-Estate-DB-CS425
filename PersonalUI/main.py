@@ -652,7 +652,7 @@ def delete_property_data():
 
     button = tk.Button(DeletePropertyFrame, text="Delete", font=("Helvetica", 12), command=success_message)
     button.grid(row = 2, column=1)
-def output_agent_data():
+def output_property_data():
     EditDataFrame.destroy()
 
     OutputFrame = tk.Frame(root, padx=10, pady=10)
