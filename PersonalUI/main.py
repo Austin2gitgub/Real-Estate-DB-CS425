@@ -286,7 +286,7 @@ def printAgentData():
 # GENERAL FUNCTIONS
 def success_message(): # Check in future
         messagebox.showinfo("Success", "Operation successful!")
-def create_user_data(): # Creating user data frame
+def create_agent_data(): # Creating user data frame
     EditDataFrame.destroy()
     CreateUserFrame = tk.Frame(root)
     CreateUserFrame.pack()
@@ -399,7 +399,7 @@ def delete_agent_data():
 
     button = tk.Button(DeleteAgentFrame, text="Delete", font=("Helvetica", 12), command=success_message)
     button.grid(row = 2, column=1)
-def output_user_data():
+def output_agent_data():
     EditDataFrame.destroy()
 
     OutputFrame = tk.Frame(root, padx=10, pady=10)
