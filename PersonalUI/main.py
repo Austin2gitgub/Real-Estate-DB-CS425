@@ -388,7 +388,7 @@ def delete_agent_data():
 
     DeleteAgentFrame.pack()
 
-    label_agent_id = tk.Label(DeleteUserFrame, text="Delete agent by AgentID", font=("Helvetica", 12, "bold"))
+    label_agent_id = tk.Label(DeleteAgentFrame, text="Delete agent by AgentID", font=("Helvetica", 12, "bold"))
     label_agent_id.grid(row=0, column=1, sticky="W")
 
     label_agent_id = tk.Label(DeleteAgentFrame, text="Agent ID:", font=("Helvetica", 12))
