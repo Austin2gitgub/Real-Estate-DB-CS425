@@ -29,7 +29,6 @@ CREATE TABLE Agents (
     -- FOREIGN KEY (propertyID) REFERENCES Properties(PropertyID)
 );
 
-DELETE TABLE Agent;
 
 -- -- Creating Properties table
 CREATE TABLE Properties (
@@ -707,6 +706,54 @@ END //
 DELIMITER ;
 
 
+-- New functions for Deliverable #5
+
+-- Set Union
+-- Get the demographic location of all our users for advertaisement purposes and personalized ad monitoring
+
+SELECT Address AS 'Demographics of our Users' FROM Users
+UNION
+SELECT Location FROM Agents;
+
+-- Set EXCEPT
+-- Find Properties that are not rented out, ie. unsold & sold properties
+
+SELECT PropertyID, Address FROM properties
+WHERE PropertyID NOT IN (SELECT PropertyID FROM rentproperties);
+
+-- SET Membership
+-- Show all the properties that AgentID='1' is sold or unsold
+SELECT AgentID, PropertyID, Status, Address FROM properties
+WHERE AgentID IN (SELECT AgentID FROM Agents WHERE AgentID='1');
+
+-- SET comparison
+-- All properties that are less than 500k
+SELECT *
+FROM properties
+WHERE Price < ANY(SELECT Price FROM properties WHERE Price<"500000");
+
+-- WITH clause
+-- Finding properties that are above the average price in market
+
+WITH tempTable(averageValue) AS
+	(SELECT avg(Price)
+    from properties)
+		SELECT PropertyID, Address, Status, Price
+        FROM properties, tempTable
+        WHERE properties.Price > tempTable.averageValue;
+        
+-- Advanced Aggregate Functions
+-- Minimum price to rent or buy in each city
+SELECT City, MIN(Price) AS Minimum_Rent_Price_In_Each_Location
+FROM properties
+GROUP BY City;
+
+-- OLAP
+-- total sold properties based on type on the real-estate website
+SELECT Type, COUNT(propertyID) AS Total_Sold
+FROM properties
+WHERE Status = 'sold'
+GROUP BY Type;
 
 -- SELECT p.PropertyType, COUNT(*) AS TotalSold
 -- FROM SoldProperties sp
