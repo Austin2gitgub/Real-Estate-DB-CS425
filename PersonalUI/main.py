@@ -8,7 +8,7 @@ from decimal import *
 from tkinter import messagebox
 
 # Declaring variables to use
-connector = mysql.connector.connect(host='localhost', user='root', password='!', database='RealEstate_Final')
+connector = mysql.connector.connect(host='localhost', user='root', password='       !', database='RealEstate_Final')
 run = True
 if connector:
     print("Connected\n")
