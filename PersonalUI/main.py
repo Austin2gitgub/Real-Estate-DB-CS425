@@ -8,7 +8,7 @@ from decimal import *
 from tkinter import messagebox
 
 # Declaring variables to use
-connector = mysql.connector.connect(host='localhost', user='root', password='       !', database='RealEstate_Final')
+connector = mysql.connector.connect(host='localhost', user='root', password='', database='RealEstate_Final')
 run = True
 if connector:
     print("Connected\n")
@@ -25,13 +25,7 @@ def getDataTables():
     table_names = [row[0] for row in output]  # Extract table names from rows
     print(table_names)
     return table_names
-def printUserData():
-    res = connector.cursor()
-    print_query = "SELECT * FROM Users"
-    res.execute(print_query)
-    output = res.fetchall()
-    text = tabulate(output, headers=["UserID", "Name", "Email", "MobileNumber", "BuyerSellerAgent", "Address"])
-    return  text
+
 
 
 # PROPERTIES DATA ONLY
@@ -51,7 +45,6 @@ def checkForAgent(AgentID):
 
 def createPropertiesData( AgentID, Status, Address,  ZipCode,City, State, SquareFeet, Price, Type,LotSize,Beds,Baths):
     res = connector.cursor()
-
     if checkForAgent(AgentID):
         insert_query = "INSERT INTO Properties ( AgentID, Status, Address,  ZipCode,City, State, SquareFeet, Price, Type,LotSize,Beds,Baths) VALUES ( %(AgentID)s, %(Status)s, %(Address)s, %(ZipCode)s, %(City)s, %(State)s, %(SquareFeet)s, %(Price)s, %(Type)s, %(LotSize)s, %(Beds)s, %(Baths)s)"
         new_property = {
@@ -136,7 +129,7 @@ def deleteUserData(UserID):
             updateAgentData(agentID, None, None, None, None)
 
     delete_query = "DELETE FROM Users WHERE UserID=%s "
-    new_property = (UserID, ) # Don't forget comma here, if it is not there, code won't work
+    new_property = (UserID,) # Don't forget comma here, if it is not there, code won't work
     res.execute(delete_query, new_property)
     connector.commit()
     print("Deleted Successfully!")
@@ -145,8 +138,8 @@ def printUserData():
     print_query = "SELECT * FROM Users"
     res.execute(print_query)
     output = res.fetchall()
-    print(tabulate(output, headers=["UserID", "Name", "Email", "MobileNumber", "BuyerSellerAgent", "Address"]))
-
+    text = tabulate(output, headers=["UserID", "Name", "Email", "MobileNumber", "BuyerSellerAgent", "Address"])
+    return text
 
 #------------------------------------------------------------
 
@@ -300,9 +293,7 @@ def printAgentData():
 def success_message(): # Check in future
         messagebox.showinfo("Success", "Operation successful!")
 def create_user_data(): # Creating user data frame
-    EditDataFrame.destroy()
-    CreateUserFrame = tk.Frame(root)
-    CreateUserFrame.pack()
+    CreateUserFrame = tk.Toplevel(root)
 
     label = tk.Label(CreateUserFrame, text="Provide name to add : ", font=("Helvetica", 12, "bold"))
     label.pack( )
@@ -345,13 +336,14 @@ def create_user_data(): # Creating user data frame
     button = tk.Button(CreateUserFrame, font=("Helvetica", 14, "bold"), text="Add", command=lambda : createUsersData(Name, Email, MobileNumber, BuyerSellerAgent, Address) )
     button.pack()
 def update_user_data():
-  EditDataFrame.destroy()
 
-  UpdateUserFrame = tk.Frame(root, padx=10, pady=10)
-  UpdateUserFrame.pack()
+
+  UpdateUserFrame = tk.Toplevel(root, padx=10, pady=10)
 
   label_user_id = tk.Label(UpdateUserFrame, text="User ID:", font=("Helvetica", 12))
   label_user_id.grid(row=0, column=0, sticky="W")  # Left-align label
+
+
 
   label_name = tk.Label(UpdateUserFrame, text="Name:", font=("Helvetica", 12))
   label_name.grid(row=1, column=0, sticky="W")
@@ -371,28 +363,38 @@ def update_user_data():
   entry_user_id = tk.Entry(UpdateUserFrame, font=("Helvetica", 12))
   entry_user_id.grid(row=0, column=1, padx=5, pady=5)
 
+  userID = entry_user_id.get()
+
   entry_name = tk.Entry(UpdateUserFrame, font=("Helvetica", 12))
   entry_name.grid(row=1, column=1, padx=5, pady=5)
+
+  user_name = entry_name.get()
 
   entry_email = tk.Entry(UpdateUserFrame, font=("Helvetica", 12))
   entry_email.grid(row=2, column=1, padx=5, pady=5)
 
+  email = entry_email.get()
+
   entry_mobile_number = tk.Entry(UpdateUserFrame, font=("Helvetica", 12))
   entry_mobile_number.grid(row=3, column=1, padx=5, pady=5)
+
+  mobile_number = entry_mobile_number.get()
 
   entry_status = tk.Entry(UpdateUserFrame, font=("Helvetica", 12))
   entry_status.grid(row=4, column=1, padx=5, pady=5)
 
+  status = entry_status.get()
+
   text_address = tk.Entry(UpdateUserFrame, font=("Helvetica", 12))
   text_address.grid(row=5, column=1, padx=5, pady=5)
 
-  button = tk.Button(UpdateUserFrame, font=("Helvetica", 12), text="Update", command=success_message)
+  adress = text_address.get()
+
+  button = tk.Button(UpdateUserFrame, font=("Helvetica", 12), text="Update", command=lambda : updateUserData(userID, user_name, email, mobile_number, status, adress))
   button.grid(row= 6, column= 1, padx=5, pady=5)
 def delete_user_data():
-    EditDataFrame.destroy()
-    DeleteUserFrame = tk.Frame(root, padx=10, pady=10)
-
-    DeleteUserFrame.pack()
+    selected = 4
+    DeleteUserFrame = tk.Toplevel(root)
 
     label_user_id = tk.Label(DeleteUserFrame, text="Delete user by UserID", font=("Helvetica", 12, "bold"))
     label_user_id.grid(row=0, column=1, sticky="W")
@@ -403,8 +405,13 @@ def delete_user_data():
     entry_status = tk.Entry(DeleteUserFrame, font=("Helvetica", 12))
     entry_status.grid(row=1, column=1, padx=5, pady=5)
 
-    button = tk.Button(DeleteUserFrame, text="Delete", font=("Helvetica", 12), command=success_message)
+    userid = entry_status.get()
+    print(userid)
+    button = tk.Button(DeleteUserFrame, text="Delete", font=("Helvetica", 12), command=lambda : deleteUserData(userid))
     button.grid(row = 2, column=1)
+    #
+    # button = tk.Button(DeleteUserFrame, text="Back", font=("Helvetica", 12), command=)
+    # button.grid(row=2, column=2)
 def output_user_data():
     EditDataFrame.destroy()
 
@@ -865,7 +872,6 @@ def show_database_page():
 
 
 def edit_data_frame(create_command, update_command, delete_command, output_command):
-  selected = 3
   DatabaseFrame.destroy()
   # Create buttons for CRUD operations
   # Will change later
