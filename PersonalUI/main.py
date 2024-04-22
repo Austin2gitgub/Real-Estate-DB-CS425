@@ -8,7 +8,7 @@ from decimal import *
 from tkinter import messagebox
 
 # Declaring variables to use
-connector = mysql.connector.connect(host='localhost', user='root', password='', database='RealEstate_Final')
+connector = mysql.connector.connect(host='localhost', user='root', password='Praman@2627', database='RealEstate_Final')
 run = True
 if connector:
     print("Connected\n")
@@ -100,7 +100,9 @@ def deletePropertiesData(PropertyID):
 # USERS ONLY
 def createUsersData(Name, Email, MobileNumber, BuyerSellerAgent, Address):
     res = connector.cursor()
+    UserID = 41
     new_property = {
+        "UserID": UserID,
         "Name": Name,
         "Email": Email,
         "MobileNumber": MobileNumber,
@@ -110,6 +112,7 @@ def createUsersData(Name, Email, MobileNumber, BuyerSellerAgent, Address):
     create_query= "INSERT INTO Users (Name, Email, MobileNumber, BuyerSellerAgent, Address) VALUES (%(Name)s, %(Email)s, %(MobileNumber)s, %(BuyerSellerAgent)s, %(Address)s) "
     res.execute(create_query, new_property)
     connector.commit()
+    UserID += 1
     print("Inserted successfully!")
 def updateUserData(UserID, Name, Email, MobileNumber, BuyerSellerAgent, Address):
     res = connector.cursor()
@@ -413,9 +416,8 @@ def delete_user_data():
     # button = tk.Button(DeleteUserFrame, text="Back", font=("Helvetica", 12), command=)
     # button.grid(row=2, column=2)
 def output_user_data():
-    EditDataFrame.destroy()
 
-    OutputFrame = tk.Frame(root, padx=10, pady=10)
+    OutputFrame = tk.Toplevel(root, padx=10, pady=10)
 
     OutputFrame.pack()
 
@@ -441,8 +443,7 @@ def printPropertyData():
 
 
 def create_property_data(): # Creating property data frame
-    EditDataFrame.destroy()
-    CreatePropertyFrame = tk.Frame(root)
+    CreatePropertyFrame = tk.Toplevel(root)
     CreatePropertyFrame.pack()
 
     # label = tk.Label(CreateUserFrame, text="Provide AgentID to add : ", font=("Helvetica", 12, "bold"))
@@ -536,9 +537,8 @@ def create_property_data(): # Creating property data frame
     button = tk.Button(CreatePropertyFrame, font=("Helvetica", 14, "bold"), text="Add", command=success_message )
     button.pack()
 def update_property_data():
-  EditDataFrame.destroy()
 
-  UpdatePropertyFrame = tk.Frame(root, padx=10, pady=10)
+  UpdatePropertyFrame = tk.Toplevel(root, padx=10, pady=10)
   UpdatePropertyFrame.pack()
 
   label_property_id = tk.Label(UpdatePropertyFrame, text="PropertyID:", font=("Helvetica", 12))
@@ -621,8 +621,7 @@ def update_property_data():
 
 
 def delete_property_data():
-    EditDataFrame.destroy()
-    DeletePropertyFrame = tk.Frame(root, padx=10, pady=10)
+    DeletePropertyFrame = tk.Toplevel(root, padx=10, pady=10)
 
     DeletePropertyFrame.pack()
 
@@ -635,9 +634,8 @@ def delete_property_data():
     button = tk.Button(DeletePropertyFrame, text="Delete", font=("Helvetica", 12), command=success_message)
     button.grid(row = 2, column=1)
 def output_property_data():
-    EditDataFrame.destroy()
 
-    OutputPropertyFrame = tk.Frame(root, padx=10, pady=10)
+    OutputPropertyFrame = tk.Toplevel(root, padx=10, pady=10)
 
     OutputPropertyFrame.pack()
 
@@ -664,8 +662,7 @@ def printAgentData():
 
 # Agent FUNCTIONS
 def create_agent_data(): # Creating user data frame
-    EditDataFrame.destroy()
-    CreateAgentData = tk.Frame(root)
+    CreateAgentData = tk.Toplevel(root)
     CreateAgentData.pack()
 
     # label = tk.Label(CreateUserFrame, text="Provide AgentID to add : ", font=("Helvetica", 12, "bold"))
@@ -717,9 +714,8 @@ def create_agent_data(): # Creating user data frame
     button = tk.Button(CreateAgentData, font=("Helvetica", 14, "bold"), text="Add", command=success_message )
     button.pack()
 def update_agent_data():
-  EditDataFrame.destroy()
 
-  UpdateAgentFrame = tk.Frame(root, padx=10, pady=10)
+  UpdateAgentFrame = tk.Toplevel(root, padx=10, pady=10)
   UpdateAgentFrame.pack()
 
   label_agent_id = tk.Label(UpdateAgentFrame, text="AgentID:", font=("Helvetica", 12))
@@ -760,8 +756,7 @@ def update_agent_data():
 
 
 def delete_agent_data():
-    EditDataFrame.destroy()
-    DeleteAgentFrame = tk.Frame(root, padx=10, pady=10)
+    DeleteAgentFrame = tk.Toplevel(root, padx=10, pady=10)
 
     DeleteAgentFrame.pack()
 
@@ -777,9 +772,8 @@ def delete_agent_data():
     button = tk.Button(DeleteAgentFrame, text="Delete", font=("Helvetica", 12), command=success_message)
     button.grid(row = 2, column=1)
 def output_agent_data():
-    EditDataFrame.destroy()
 
-    OutputAgentFrame = tk.Frame(root, padx=10, pady=10)
+    OutputAgentFrame = tk.Toplevel(root, padx=10, pady=10)
 
     OutputAgentFrame.pack()
 
