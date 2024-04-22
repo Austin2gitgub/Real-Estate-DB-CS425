@@ -99,19 +99,16 @@ def deletePropertiesData(PropertyID):
 # USERS ONLY
 def createUsersData(Name, Email, MobileNumber, BuyerSellerAgent, Address):
     res = connector.cursor()
-    UserID = 41
     new_property = {
-        "UserID": UserID,
         "Name": Name,
         "Email": Email,
         "MobileNumber": MobileNumber,
         "BuyerSellerAgent": BuyerSellerAgent,
         "Address": Address
     }
-    create_query= "INSERT INTO Users (Name, Email, MobileNumber, BuyerSellerAgent, Address) VALUES (%(Name)s, %(Email)s, %(MobileNumber)s, %(BuyerSellerAgent)s, %(Address)s) "
+    create_query= "INSERT IGNORE INTO Users (Name, Email, MobileNumber, BuyerSellerAgent, Address) VALUES (%(Name)s, %(Email)s, %(MobileNumber)s, %(BuyerSellerAgent)s, %(Address)s) "
     res.execute(create_query, new_property)
     connector.commit()
-    UserID += 1
     print("Inserted successfully!")
 def updateUserData(UserID, Name, Email, MobileNumber, BuyerSellerAgent, Address):
     res = connector.cursor()
@@ -327,6 +324,8 @@ def create_user_data(): # Creating user data frame
     dropbox = tk.OptionMenu(CreateUserFrame, clicked, *options )
     dropbox.pack()
     BuyerSellerAgent = clicked.get()
+
+
     label = tk.Label(CreateUserFrame, text="Provide address to add : ", font=("Helvetica", 12, "bold"))
     label.pack()
 
@@ -335,7 +334,7 @@ def create_user_data(): # Creating user data frame
     Address= input_box.get()
 
 
-    button = tk.Button(CreateUserFrame, font=("Helvetica", 14, "bold"), text="Add", command=lambda : createUsersData(Name, Email, MobileNumber, BuyerSellerAgent, Address) )
+    button = tk.Button(CreateUserFrame, font=("Helvetica", 14, "bold"), text="Add", command=lambda :  createUsersData(Name, Email, MobileNumber, BuyerSellerAgent, Address)  )
     button.pack()
 def update_user_data():
 
@@ -418,8 +417,6 @@ def output_user_data():
 
     OutputFrame = tk.Toplevel(root, padx=10, pady=10)
 
-    OutputFrame.pack()
-
     text = tk.Text(OutputFrame ,font=("Helvetica", 12))
     text.insert(tk.END, printUserData())
     text.pack(expand=True)
@@ -428,7 +425,7 @@ def output_user_data():
         # Increase width by 20 characters and height by 5 lines
         text.config(width=text.winfo_width() + 20, height=text.winfo_height() + 5)
 
-    resize_button = tk.Button(root, text="Fix", command=resize_text_box)
+    resize_button = tk.Button(OutputFrame, text="Fix", command=resize_text_box)
     resize_button.pack()
 # Property Tables
 
@@ -443,7 +440,6 @@ def printPropertyData():
 
 def create_property_data(): # Creating property data frame
     CreatePropertyFrame = tk.Toplevel(root)
-    CreatePropertyFrame.pack()
 
     # label = tk.Label(CreateUserFrame, text="Provide AgentID to add : ", font=("Helvetica", 12, "bold"))
     # label.pack( )
@@ -538,7 +534,6 @@ def create_property_data(): # Creating property data frame
 def update_property_data():
 
   UpdatePropertyFrame = tk.Toplevel(root, padx=10, pady=10)
-  UpdatePropertyFrame.pack()
 
   label_property_id = tk.Label(UpdatePropertyFrame, text="PropertyID:", font=("Helvetica", 12))
   label_property_id.grid(row=0, column=0, sticky="W")  # Left-align label
@@ -622,8 +617,6 @@ def update_property_data():
 def delete_property_data():
     DeletePropertyFrame = tk.Toplevel(root, padx=10, pady=10)
 
-    DeletePropertyFrame.pack()
-
     label_property_id = tk.Label(DeletePropertyFrame, text="Delete property by PropertyID", font=("Helvetica", 12, "bold"))
     label_property_id.grid(row=0, column=1, sticky="W")
 
@@ -636,7 +629,6 @@ def output_property_data():
 
     OutputPropertyFrame = tk.Toplevel(root, padx=10, pady=10)
 
-    OutputPropertyFrame.pack()
 
     text = tk.Text(OutputPropertyFrame, font=("Helvetica", 12))
     text.insert(tk.END, printPropertyData())
@@ -651,18 +643,12 @@ def output_property_data():
 
 
 
-def printAgentData():
-    res = connector.cursor()
-    print_query = "SELECT * FROM Agents"
-    res.execute(print_query)
-    output = res.fetchall()
-    text = tabulate(output, headers=["AgentID", "UserID","Agent_company" ,"Agent_Name", "Experience", "Location",  "Languages"])
-    return  text
+
 
 # Agent FUNCTIONS
 def create_agent_data(): # Creating user data frame
     CreateAgentData = tk.Toplevel(root)
-    CreateAgentData.pack()
+
 
     # label = tk.Label(CreateUserFrame, text="Provide AgentID to add : ", font=("Helvetica", 12, "bold"))
     # label.pack( )
@@ -715,7 +701,7 @@ def create_agent_data(): # Creating user data frame
 def update_agent_data():
 
   UpdateAgentFrame = tk.Toplevel(root, padx=10, pady=10)
-  UpdateAgentFrame.pack()
+
 
   label_agent_id = tk.Label(UpdateAgentFrame, text="AgentID:", font=("Helvetica", 12))
   label_agent_id.grid(row=0, column=0, sticky="W")  # Left-align label
@@ -757,7 +743,7 @@ def update_agent_data():
 def delete_agent_data():
     DeleteAgentFrame = tk.Toplevel(root, padx=10, pady=10)
 
-    DeleteAgentFrame.pack()
+
 
     label_agent_id = tk.Label(DeleteAgentFrame, text="Delete agent by AgentID", font=("Helvetica", 12, "bold"))
     label_agent_id.grid(row=0, column=1, sticky="W")
@@ -774,7 +760,7 @@ def output_agent_data():
 
     OutputAgentFrame = tk.Toplevel(root, padx=10, pady=10)
 
-    OutputAgentFrame.pack()
+
 
     text = tk.Text(OutputAgentFrame ,font=("Helvetica", 12))
     text.insert(tk.END, printAgentData())
@@ -816,7 +802,7 @@ def show_database_page():
 
     WelcomeFrame.destroy()
     DatabaseFrame.pack()
-    """Creates the second page with listbox to display table names."""
+
     label = tk.Label(DatabaseFrame, text="Choose the database to edit", font=("Helvetica", 18, "bold"))
     label.pack()
     table_names_listbox = tk.Listbox(DatabaseFrame, font=("Helvetica", 14), selectmode=tk.SINGLE)
@@ -865,7 +851,7 @@ def show_database_page():
 
 
 def edit_data_frame(create_command, update_command, delete_command, output_command):
-  DatabaseFrame.destroy()
+  EditDataFrame = tk.Toplevel(root)
   # Create buttons for CRUD operations
   # Will change later
 
@@ -885,13 +871,10 @@ def edit_data_frame(create_command, update_command, delete_command, output_comma
   button_exit.pack(pady=10, padx=10)
 
 
-  EditDataFrame.pack()
-
 root = tk.Tk()
 root.geometry("700x500")
 WelcomeFrame = tk.Frame(root)
 DatabaseFrame = tk.Frame(root)
-EditDataFrame = tk.Frame(root)
 selected = 1
 welcome_page()
 root.mainloop()
