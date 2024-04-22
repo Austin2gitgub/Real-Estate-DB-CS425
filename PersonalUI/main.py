@@ -16,7 +16,6 @@ else: print("Connection error")
 
 # Declaring functions to use
 
-
 def getDataTables():
     res = connector.cursor()
     sqlCommand = "SELECT DISTINCT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME IN ('users', 'agents', 'properties')"
