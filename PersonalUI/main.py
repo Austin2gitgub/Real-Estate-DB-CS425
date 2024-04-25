@@ -8,7 +8,7 @@ from decimal import *
 from tkinter import messagebox
 
 # Declaring variables to use
-connector = mysql.connector.connect(host='localhost', user='root', password='', database='RealEstate_Final')
+connector = mysql.connector.connect(host='localhost', user='root', password='ROOFacademy1!', database='RealEstate_Final_Final')
 run = True
 if connector:
     print("Connected\n")
@@ -109,14 +109,15 @@ def createUsersData(Name, Email, MobileNumber, BuyerSellerAgent, Address):
     create_query= "INSERT IGNORE INTO Users (Name, Email, MobileNumber, BuyerSellerAgent, Address) VALUES (%(Name)s, %(Email)s, %(MobileNumber)s, %(BuyerSellerAgent)s, %(Address)s) "
     res.execute(create_query, new_property)
     connector.commit()
-    print("Inserted successfully!")
+    messagebox.showinfo("Success", " Inserted successfully!")
+
 def updateUserData(UserID, Name, Email, MobileNumber, BuyerSellerAgent, Address):
     res = connector.cursor()
     new_property = (Name, Email, MobileNumber, BuyerSellerAgent , Address, UserID)
     update_query = "UPDATE Users SET Name=%s, Email=%s, MobileNumber=%s, BuyerSellerAgent=%s, Address=%s WHERE UserID= %s"
     res.execute(update_query, new_property)
     connector.commit()
-    print("Updated successfully!")
+    messagebox.showinfo("Success", "Updated successfully!")
 def deleteUserData(UserID):
     res = connector.cursor()
     if checkForUser(UserID):
@@ -131,7 +132,7 @@ def deleteUserData(UserID):
     new_property = (UserID,) # Don't forget comma here, if it is not there, code won't work
     res.execute(delete_query, new_property)
     connector.commit()
-    print("Deleted Successfully!")
+    messagebox.showinfo("Deleted", "Updated successfully!")
 def printUserData():
     res = connector.cursor()
     print_query = "SELECT * FROM Users"
@@ -641,7 +642,75 @@ def output_property_data():
     resize_button = tk.Button(root, text="Fix", command=resize_text_box)
     resize_button.pack()
 
+def set_union_data():
 
+    res = connector.cursor()
+    print_query = "SELECT Address AS 'Demographics of our Users' FROM Users UNION SELECT Location FROM Agents;"
+    res.execute(print_query)
+    output = res.fetchall()
+    text = tabulate(output,
+    headers=["Demographics of our Users"])
+    return text
+
+def set_except_data():
+
+    res = connector.cursor()
+    print_query = "SELECT PropertyID, Address FROM properties WHERE PropertyID NOT IN (SELECT PropertyID FROM rentproperties);"
+    res.execute(print_query)
+    output = res.fetchall()
+    text = tabulate(output,
+    headers=["PropertyID", "Address"])
+    return text
+
+def set_membership_data():
+
+    res = connector.cursor()
+    print_query = "SELECT AgentID, PropertyID, Status, Address FROM properties WHERE AgentID IN (SELECT AgentID FROM Agents WHERE AgentID='1');"
+    res.execute(print_query)
+    output = res.fetchall()
+    text = tabulate(output,
+    headers=["AgentID", "PropertyID", "Status", "Address"])
+    return text
+
+def set_comparision_data():
+
+    res = connector.cursor()
+    print_query = "SELECT * FROM properties WHERE Price < ANY(SELECT Price FROM properties WHERE Price<500000);"
+    res.execute(print_query)
+    output = res.fetchall()
+    text = tabulate(output,
+    headers=["PropertyID", "AgentID", "Status", "Address", "ZipCode", "City", "State", "SquareFeet", "Price", "Type", "LotSize", "Beds", "Baths"])
+    return text
+
+def set_with_data():
+
+    res = connector.cursor()
+    print_query = "WITH tempTable(averageValue) AS (SELECT avg(Price) from properties) SELECT PropertyID, Address, Status, Price FROM properties, tempTable WHERE properties.Price > tempTable.averageValue;"
+    res.execute(print_query)
+    output = res.fetchall()
+    text = tabulate(output,
+    headers=["PropertyID", "Address", "Status", "Price"])
+    return text
+
+def set_advanced_data():
+
+    res = connector.cursor()
+    print_query = "WITH tempTable(averageValue) AS (SELECT avg(Price) from properties) SELECT PropertyID, Address, Status, Price FROM properties, tempTable WHERE properties.Price > tempTable.averageValue;"
+    res.execute(print_query)
+    output = res.fetchall()
+    text = tabulate(output,
+    headers=["PropertyID", "Address", "Status", "Price"])
+    return text
+
+def set_olap_data():
+
+    res = connector.cursor()
+    print_query = "SELECT Type, COUNT(propertyID) AS Total_Sold FROM properties WHERE Status = 'sold' GROUP BY Type;"
+    res.execute(print_query)
+    output = res.fetchall()
+    text = tabulate(output,
+    headers=["Type", "Total_Sold"])
+    return text
 
 
 
@@ -788,14 +857,169 @@ def welcome_page():
   label = tk.Label(WelcomeFrame, text="App for Real Estate Professionals", font=("Helvetica", 14))
   label.pack(pady=20, padx=20)
 
-  label = tk.Label(WelcomeFrame, text="Made by:", font=("Helvetica", 12))
+  label = tk.Label(WelcomeFrame, text="Made by: Omar Ashurbayov, Lalith Kothuru, Austin Samuel, Pranav Kuchibhotla ", font=("Helvetica", 12))
   label.pack(pady=10, padx=20)
   # Button is here
-  button = tk.Button(WelcomeFrame, text="Enter to have an amazing experience!", font=("Helvetica", 12), command=show_database_page)
+  button = tk.Button(WelcomeFrame, text="Edit Databases", font=("Helvetica", 12), command=show_database_page)
+  button.pack(pady=20, padx=20)
+
+
+  button = tk.Button(WelcomeFrame, text="Use the Built-in OLAP/Advanced Quries", font=("Helvetica", 12), command=show_olap_page)
   button.pack(pady=20, padx=20)
 
   WelcomeFrame.pack()
 
+
+def show_olap_page():
+    OlapFrame = tk.Toplevel(root)
+
+    button = tk.Button(OlapFrame, text="Set Union Function", font=("Helvetica", 12),
+                       command=show_union_frame)
+    button.pack(pady=20, padx=20)
+
+    button = tk.Button(OlapFrame, text="Set Except Function", font=("Helvetica", 12),
+                       command=show_union_except_frame)
+    button.pack(pady=20, padx=20)
+
+    button = tk.Button(OlapFrame, text="Set Membership Function", font=("Helvetica", 12),
+                       command=show_union_membership_frame)
+    button.pack(pady=20, padx=20)
+
+    button = tk.Button(OlapFrame, text="Set Comparison Function", font=("Helvetica", 12),
+                       command=show_union_comparison_frame)
+    button.pack(pady=20, padx=20)
+
+    button = tk.Button(OlapFrame, text="Set WITH Clause Function", font=("Helvetica", 12),
+                       command=show_union_WITH_frame)
+    button.pack(pady=20, padx=20)
+
+    button = tk.Button(OlapFrame, text="Set Advanced Function", font=("Helvetica", 12),
+                       command=show_union_advanced_frame)
+    button.pack(pady=20, padx=20)
+
+    button = tk.Button(OlapFrame, text="OLAP Function", font=("Helvetica", 12),
+                       command=show_union_olap_frame)
+    button.pack(pady=20, padx=20)
+
+
+def show_union_frame():
+    unionFrame = tk.Toplevel(root)
+
+    output = tk.Text(unionFrame, padx=10, pady=10)
+
+
+    text = tk.Text(unionFrame ,font=("Helvetica", 12))
+    text.insert(tk.END, set_union_data())
+    text.pack(expand=True)
+
+    def resize_text_box():
+        # Increase width by 20 characters and height by 5 lines
+        text.config(width=text.winfo_width() + 20, height=text.winfo_height() + 5)
+
+    resize_button = tk.Button(unionFrame, text="Fix", command=resize_text_box)
+    resize_button.pack()
+
+def show_union_except_frame():
+    unionExceptFrame = tk.Toplevel(root)
+
+    output2 = tk.Text(unionExceptFrame, padx=10, pady=10)
+
+
+    text = tk.Text(unionExceptFrame ,font=("Helvetica", 12))
+    text.insert(tk.END, set_except_data())
+    text.pack(expand=True)
+
+    def resize_text_box():
+        # Increase width by 20 characters and height by 5 lines
+        text.config(width=text.winfo_width() + 20, height=text.winfo_height() + 5)
+
+    resize_button = tk.Button(unionExceptFrame, text="Fix", command=resize_text_box)
+    resize_button.pack()
+
+def show_union_membership_frame():
+    unionMembershipFrame = tk.Toplevel(root)
+
+    output3 = tk.Text(unionMembershipFrame, padx=10, pady=10)
+
+
+    text = tk.Text(unionMembershipFrame ,font=("Helvetica", 12))
+    text.insert(tk.END, set_membership_data())
+    text.pack(expand=True)
+
+    def resize_text_box():
+        # Increase width by 20 characters and height by 5 lines
+        text.config(width=text.winfo_width() + 20, height=text.winfo_height() + 5)
+
+    resize_button = tk.Button(unionMembershipFrame, text="Fix", command=resize_text_box)
+    resize_button.pack()
+
+def show_union_comparison_frame():
+    unionComparisonFrame = tk.Toplevel(root)
+
+    output4 = tk.Text(unionComparisonFrame, padx=10, pady=10)
+
+
+    text = tk.Text(unionComparisonFrame ,font=("Helvetica", 12))
+    text.insert(tk.END, set_comparision_data())
+    text.pack(expand=True)
+
+    def resize_text_box():
+        # Increase width by 20 characters and height by 5 lines
+        text.config(width=text.winfo_width() + 20, height=text.winfo_height() + 5)
+
+    resize_button = tk.Button(unionComparisonFrame, text="Fix", command=resize_text_box)
+    resize_button.pack()
+
+def show_union_WITH_frame():
+    WITHFrame = tk.Toplevel(root)
+
+    output5 = tk.Text(WITHFrame, padx=10, pady=10)
+
+
+    text = tk.Text(WITHFrame ,font=("Helvetica", 12))
+    text.insert(tk.END, set_with_data())
+    text.pack(expand=True)
+
+    def resize_text_box():
+        # Increase width by 20 characters and height by 5 lines
+        text.config(width=text.winfo_width() + 20, height=text.winfo_height() + 5)
+
+    resize_button = tk.Button(WITHFrame, text="Fix", command=resize_text_box)
+    resize_button.pack()
+
+def show_union_advanced_frame():
+    setAdvancedFrame = tk.Toplevel(root)
+
+    output6 = tk.Text(setAdvancedFrame, padx=10, pady=10)
+
+
+    text = tk.Text(setAdvancedFrame ,font=("Helvetica", 12))
+    text.insert(tk.END, set_advanced_data())
+    text.pack(expand=True)
+
+    def resize_text_box():
+        # Increase width by 20 characters and height by 5 lines
+        text.config(width=text.winfo_width() + 20, height=text.winfo_height() + 5)
+
+    resize_button = tk.Button(setAdvancedFrame, text="Fix", command=resize_text_box)
+    resize_button.pack()
+
+def show_union_olap_frame():
+    setOLAPFrame = tk.Toplevel(root)
+
+    output7 = tk.Text(setOLAPFrame, padx=10, pady=10)
+
+
+    text = tk.Text(setOLAPFrame ,font=("Helvetica", 12))
+    text.insert(tk.END, set_olap_data())
+    text.pack(expand=True)
+
+    def resize_text_box():
+        # Increase width by 20 characters and height by 5 lines
+        text.config(width=text.winfo_width() + 20, height=text.winfo_height() + 5)
+
+    resize_button = tk.Button(setOLAPFrame, text="Fix", command=resize_text_box)
+    resize_button.pack()
 
 def show_database_page():
     selected= 2
@@ -835,8 +1059,11 @@ def show_database_page():
           update_command = update_property_data
           delete_command = delete_property_data
           output_command = output_property_data
+
       button.config(command=lambda: edit_data_frame(create_command, update_command, delete_command,
                                                        output_command))
+
+
       labelToChoose.config(text=selected_table)
 
 
@@ -871,10 +1098,13 @@ def edit_data_frame(create_command, update_command, delete_command, output_comma
   button_exit.pack(pady=10, padx=10)
 
 
+
 root = tk.Tk()
 root.geometry("700x500")
 WelcomeFrame = tk.Frame(root)
 DatabaseFrame = tk.Frame(root)
+
+EditDataFrame = tk.Frame(root)
 selected = 1
 welcome_page()
 root.mainloop()

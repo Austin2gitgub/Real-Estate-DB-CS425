@@ -12,14 +12,15 @@ if connector:
 else: print("Connection error")
 
 # Declaring functions to use
-
+tabless = []
 def getDataTables():
     res = connector.cursor()
     sqlCommand = "SELECT DISTINCT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME IN ('users', 'agents', 'properties')"
     res.execute(sqlCommand)
     output = res.fetchall()
-    print(tabulate(output, headers= [ "Table Names\n "]))
-
+    tables = [row[0] for row in output]
+    tabless.append(tables)
+    print(tabless)
 # PROPERTIES DATA ONLY
 
 def checkForAgent(AgentID):
@@ -131,7 +132,11 @@ def printUserData():
     print_query = "SELECT * FROM Users"
     res.execute(print_query)
     output = res.fetchall()
-    print(tabulate(output, headers=["UserID", "Name", "Email", "MobileNumber", "BuyerSellerAgent", "Address"]))
+    data = []
+    for users in output:
+        data.append(users)
+    print(data)
+    # print(tabulate(output, headers=["UserID", "Name", "Email", "MobileNumber", "BuyerSellerAgent", "Address"]))
 
 
 #------------------------------------------------------------
